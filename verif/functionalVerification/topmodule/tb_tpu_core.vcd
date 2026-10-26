@@ -1,0 +1,737 @@
+$date
+	Sat Oct 24 02:36:49 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_tpu_core $end
+$var wire 1 ! done $end
+$var wire 1 " c_valid $end
+$var wire 16 # c_out [15:0] $end
+$var wire 1 $ busy $end
+$var reg 8 % a_in [7:0] $end
+$var reg 8 & b_in [7:0] $end
+$var reg 1 ' clk $end
+$var reg 1 ( relu_mode $end
+$var reg 1 ) rst_n $end
+$var reg 1 * start $end
+$var reg 1 + transpose_mode $end
+$var reg 1 , valid_in $end
+$scope module dut $end
+$var wire 8 - a_in [7:0] $end
+$var wire 8 . b_in [7:0] $end
+$var wire 1 ' clk $end
+$var wire 1 ( relu_mode $end
+$var wire 1 ) rst_n $end
+$var wire 1 * start $end
+$var wire 8 / systolic_a_in [7:0] $end
+$var wire 8 0 systolic_b_in [7:0] $end
+$var wire 1 + transpose_mode $end
+$var wire 1 , valid_in $end
+$var wire 1 1 we_B $end
+$var wire 1 2 we_A $end
+$var wire 1 3 systolic_rst_n $end
+$var wire 16 4 systolic_out [15:0] $end
+$var wire 16 5 sram_b_out [15:0] $end
+$var wire 16 6 sram_a_out [15:0] $end
+$var wire 1 7 re_B $end
+$var wire 1 8 re_A $end
+$var wire 1 9 load_phase $end
+$var wire 8 : feeder_data [7:0] $end
+$var wire 4 ; feeder_addr [3:0] $end
+$var wire 1 ! done $end
+$var wire 1 < cs_B $end
+$var wire 1 = cs_A $end
+$var wire 1 " c_valid $end
+$var wire 16 > c_out [15:0] $end
+$var wire 1 $ busy $end
+$var wire 4 ? addr_B [3:0] $end
+$var wire 4 @ addr_A [3:0] $end
+$scope module ctrl $end
+$var wire 1 ' clk $end
+$var wire 1 ) rst_n $end
+$var wire 1 * start $end
+$var parameter 3 A COMPUTE $end
+$var parameter 3 B IDLE $end
+$var parameter 3 C LOAD_A $end
+$var parameter 3 D LOAD_B $end
+$var parameter 3 E READ $end
+$var reg 4 F addr_A [3:0] $end
+$var reg 4 G addr_B [3:0] $end
+$var reg 1 $ busy $end
+$var reg 1 = cs_A $end
+$var reg 1 < cs_B $end
+$var reg 4 H cycle_count [3:0] $end
+$var reg 1 ! done $end
+$var reg 1 9 load_phase $end
+$var reg 3 I next_state [2:0] $end
+$var reg 1 8 re_A $end
+$var reg 1 7 re_B $end
+$var reg 3 J state [2:0] $end
+$var reg 1 3 sys_rst_n $end
+$var reg 1 2 we_A $end
+$var reg 1 1 we_B $end
+$upscope $end
+$scope module input_feeder $end
+$var wire 8 K a_in [7:0] $end
+$var wire 4 L addr_ctrl [3:0] $end
+$var wire 4 M addr_out [3:0] $end
+$var wire 8 N b_in [7:0] $end
+$var wire 8 O data_to_sram [7:0] $end
+$upscope $end
+$scope module memory $end
+$var wire 4 P add_A [3:0] $end
+$var wire 4 Q add_B [3:0] $end
+$var wire 1 ' clk_A $end
+$var wire 1 ' clk_B $end
+$var wire 1 = cs_A $end
+$var wire 1 < cs_B $end
+$var wire 16 R data_inA [15:0] $end
+$var wire 1 8 re_A $end
+$var wire 1 7 re_B $end
+$var wire 1 2 we_A $end
+$var wire 1 1 we_B $end
+$var wire 16 S data_inB [15:0] $end
+$var parameter 32 T depth $end
+$var parameter 32 U width $end
+$var reg 16 V data_outA [15:0] $end
+$var reg 16 W data_outB [15:0] $end
+$upscope $end
+$scope module output_collector $end
+$var wire 1 ' clk $end
+$var wire 16 X data_from_sram [15:0] $end
+$var wire 1 ( relu_mode $end
+$var wire 1 ) rst_n $end
+$var wire 1 7 sram_valid $end
+$var wire 16 Y activated [15:0] $end
+$var reg 16 Z result_out [15:0] $end
+$var reg 1 " result_valid $end
+$upscope $end
+$scope module systolic $end
+$var wire 8 [ a [7:0] $end
+$var wire 8 \ b [7:0] $end
+$var wire 1 ' clk $end
+$var wire 1 3 rst_n $end
+$var wire 16 ] y [15:0] $end
+$var integer 32 ^ i [31:0] $end
+$var integer 32 _ j [31:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b10000 U
+b10000 T
+b100 E
+b10 D
+b1 C
+b0 B
+b11 A
+$end
+#0
+$dumpvars
+b100 _
+b100 ^
+b0 ]
+b0 \
+b0 [
+b0 Z
+bx Y
+bx X
+bx W
+bx V
+b0 S
+b0 R
+b0 Q
+b0 P
+b0 O
+b0 N
+b0 M
+b0 L
+b0 K
+b0 J
+b0 I
+b0 H
+b0 G
+b0 F
+b0 @
+b0 ?
+b0 >
+0=
+0<
+b0 ;
+b0 :
+09
+08
+07
+bx 6
+bx 5
+b0 4
+03
+02
+01
+b0 0
+b0 /
+b0 .
+b0 -
+0,
+0+
+0*
+0)
+0(
+0'
+b0 &
+b0 %
+0$
+b0 #
+0"
+1!
+$end
+#5000
+b0 Y
+b0 6
+b0 V
+b0 5
+b0 W
+b0 X
+b100 _
+b100 ^
+1'
+#10000
+0'
+#15000
+b100 _
+b100 ^
+1'
+#20000
+0'
+1)
+#25000
+b100 _
+b100 ^
+1'
+#30000
+b1 R
+b1 :
+b1 O
+0'
+1,
+b1 /
+b1 [
+b1 %
+b1 -
+b1 K
+#35000
+b100 _
+b100 ^
+1'
+#40000
+b10 R
+b10 :
+b10 O
+0'
+b10 /
+b10 [
+b10 %
+b10 -
+b10 K
+#45000
+b100 _
+b100 ^
+1'
+#50000
+b11 R
+b11 :
+b11 O
+0'
+b11 /
+b11 [
+b11 %
+b11 -
+b11 K
+#55000
+b100 _
+b100 ^
+1'
+#60000
+b100 R
+b100 :
+b100 O
+0'
+b100 /
+b100 [
+b100 %
+b100 -
+b100 K
+#65000
+b100 _
+b100 ^
+1'
+#70000
+b0 R
+b0 :
+b0 O
+0'
+b0 /
+b0 [
+b0 %
+b0 -
+b0 K
+b1 0
+b1 \
+b1 &
+b1 .
+b1 N
+#75000
+b100 _
+b100 ^
+1'
+#80000
+0'
+b10 0
+b10 \
+b10 &
+b10 .
+b10 N
+#85000
+b100 _
+b100 ^
+1'
+#90000
+0'
+b11 0
+b11 \
+b11 &
+b11 .
+b11 N
+#95000
+b100 _
+b100 ^
+1'
+#100000
+0'
+b100 0
+b100 \
+b100 &
+b100 .
+b100 N
+#105000
+b100 _
+b100 ^
+1'
+#110000
+0!
+b1 I
+0'
+1*
+0,
+#115000
+19
+12
+1=
+13
+1$
+b1 J
+b100 _
+b100 ^
+1'
+#120000
+19
+1=
+12
+0'
+0*
+#125000
+b1 ;
+b1 M
+b1 P
+b1 @
+b1 F
+b1 L
+19
+1=
+12
+b1 H
+b100 _
+b100 ^
+1'
+#130000
+0'
+#135000
+b10 ;
+b10 M
+b10 P
+b10 @
+b10 F
+b10 L
+19
+1=
+12
+b10 H
+b100 _
+b100 ^
+1'
+#140000
+0'
+#145000
+b10 I
+b11 ;
+b11 M
+b11 P
+b11 @
+b11 F
+b11 L
+19
+1=
+12
+b11 H
+b100 _
+b100 ^
+1'
+#150000
+0'
+#155000
+b100 R
+b100 :
+b100 O
+b1000 ;
+b1000 M
+b1000 P
+b1000 @
+b1000 F
+b1000 L
+19
+1=
+12
+b0 H
+b10 J
+b100 _
+b100 ^
+1'
+#160000
+0'
+#165000
+b1001 ;
+b1001 M
+b1001 P
+b1001 @
+b1001 F
+b1001 L
+19
+1=
+12
+b1 H
+b100 _
+b100 ^
+1'
+#170000
+0'
+#175000
+b1010 ;
+b1010 M
+b1010 P
+b1010 @
+b1010 F
+b1010 L
+19
+1=
+12
+b10 H
+b100 _
+b100 ^
+1'
+#180000
+0'
+#185000
+b11 I
+b1011 ;
+b1011 M
+b1011 P
+b1011 @
+b1011 F
+b1011 L
+19
+1=
+12
+b11 H
+b100 _
+b100 ^
+1'
+#190000
+0'
+#195000
+b0 R
+b0 :
+b0 O
+b0 ;
+b0 M
+b0 P
+b0 @
+b0 F
+b0 L
+09
+0=
+02
+b0 H
+b11 J
+b100 _
+b100 ^
+1'
+#200000
+0'
+#205000
+b100 _
+b100 ^
+1'
+#210000
+0'
+#215000
+b100 _
+b100 ^
+1'
+#220000
+0'
+#225000
+b100 _
+b100 ^
+1'
+#230000
+0'
+#235000
+b100 _
+b100 ^
+1'
+#240000
+0'
+#245000
+b100 _
+b100 ^
+1'
+#250000
+0'
+#255000
+b100 _
+b100 ^
+1'
+#260000
+0'
+#265000
+b100 _
+b100 ^
+1'
+#270000
+0'
+#275000
+b100 _
+b100 ^
+1'
+#280000
+0'
+#285000
+b100 _
+b100 ^
+1'
+#290000
+0'
+#295000
+b100 _
+b100 ^
+1'
+#300000
+0'
+#305000
+b100 _
+b100 ^
+1'
+#310000
+0'
+#315000
+b100 _
+b100 ^
+1'
+#320000
+0'
+#325000
+b100 _
+b100 ^
+1'
+#330000
+0'
+#335000
+b100 _
+b100 ^
+1'
+#340000
+0'
+#345000
+b100 _
+b100 ^
+1'
+#350000
+0'
+#355000
+b100 _
+b100 ^
+1'
+#360000
+0'
+#365000
+b100 _
+b100 ^
+1'
+#370000
+0'
+#375000
+b100 _
+b100 ^
+1'
+#380000
+0'
+#385000
+b100 _
+b100 ^
+1'
+#390000
+0'
+#395000
+b100 _
+b100 ^
+1'
+#400000
+0'
+#405000
+b100 _
+b100 ^
+1'
+#410000
+0'
+#415000
+b100 _
+b100 ^
+1'
+#420000
+0'
+#425000
+b100 _
+b100 ^
+1'
+#430000
+0'
+#435000
+b100 _
+b100 ^
+1'
+#440000
+0'
+#445000
+b100 _
+b100 ^
+1'
+#450000
+0'
+#455000
+b100 _
+b100 ^
+1'
+#460000
+0'
+#465000
+b100 _
+b100 ^
+1'
+#470000
+0'
+#475000
+b100 _
+b100 ^
+1'
+#480000
+0'
+#485000
+b100 _
+b100 ^
+1'
+#490000
+0'
+#495000
+b100 _
+b100 ^
+1'
+#500000
+0'
+#505000
+b100 _
+b100 ^
+1'
+#510000
+0'
+#515000
+b100 _
+b100 ^
+1'
+#520000
+0'
+#525000
+b100 _
+b100 ^
+1'
+#530000
+0'
+#535000
+b100 _
+b100 ^
+1'
+#540000
+0'
+#545000
+b100 _
+b100 ^
+1'
+#550000
+0'
+#555000
+b100 _
+b100 ^
+1'
+#560000
+0'
+#565000
+b100 _
+b100 ^
+1'
+#570000
+0'
+#575000
+b100 _
+b100 ^
+1'
+#580000
+0'
+#585000
+b100 _
+b100 ^
+1'
+#590000
+0'
+#595000
+b100 _
+b100 ^
+1'
+#600000
+0'
+#605000
+b100 _
+b100 ^
+1'
+#610000
+0'
+#615000
+b100 _
+b100 ^
+1'
+#620000
+0'

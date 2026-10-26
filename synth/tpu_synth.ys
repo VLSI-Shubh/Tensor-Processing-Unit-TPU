@@ -1,0 +1,29 @@
+# Read all RTL files
+read_verilog rtl/module/mac.v
+read_verilog rtl/module/systolic_array.v
+read_verilog rtl/module/sram_dp.v
+read_verilog rtl/module/control_unit.v
+read_verilog rtl/module/feeder.v
+read_verilog rtl/module/collector.v
+read_verilog rtl/topmodule/tpu_core.v
+
+# Hierarchy and clean up
+hierarchy -top tpu_core
+proc; opt
+fsm; opt
+memory; opt
+
+# Optimize for area
+opt -full
+
+# Technology mapping (generic Verilog)
+abc -g cmos
+
+# Create netlist
+clean
+
+# Statistics
+stat
+
+# Write synthesized Verilog
+write_verilog -attr2comment synth/tpu_synth.v

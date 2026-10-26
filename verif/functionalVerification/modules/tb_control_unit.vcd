@@ -1,0 +1,365 @@
+$date
+	Sat Oct 24 02:36:49 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_control_unit $end
+$var wire 1 ! we_B $end
+$var wire 1 " we_A $end
+$var wire 1 # sys_rst_n $end
+$var wire 1 $ re_B $end
+$var wire 1 % re_A $end
+$var wire 1 & load_phase $end
+$var wire 1 ' done $end
+$var wire 1 ( cs_B $end
+$var wire 1 ) cs_A $end
+$var wire 1 * busy $end
+$var wire 4 + addr_B [3:0] $end
+$var wire 4 , addr_A [3:0] $end
+$var reg 1 - clk $end
+$var reg 1 . rst_n $end
+$var reg 1 / start $end
+$scope module dut $end
+$var wire 1 - clk $end
+$var wire 1 . rst_n $end
+$var wire 1 / start $end
+$var parameter 3 0 COMPUTE $end
+$var parameter 3 1 IDLE $end
+$var parameter 3 2 LOAD_A $end
+$var parameter 3 3 LOAD_B $end
+$var parameter 3 4 READ $end
+$var reg 4 5 addr_A [3:0] $end
+$var reg 4 6 addr_B [3:0] $end
+$var reg 1 * busy $end
+$var reg 1 ) cs_A $end
+$var reg 1 ( cs_B $end
+$var reg 4 7 cycle_count [3:0] $end
+$var reg 1 ' done $end
+$var reg 1 & load_phase $end
+$var reg 3 8 next_state [2:0] $end
+$var reg 1 % re_A $end
+$var reg 1 $ re_B $end
+$var reg 3 9 state [2:0] $end
+$var reg 1 # sys_rst_n $end
+$var reg 1 " we_A $end
+$var reg 1 ! we_B $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b100 4
+b10 3
+b1 2
+b0 1
+b11 0
+$end
+#0
+$dumpvars
+b0 9
+b0 8
+b0 7
+b0 6
+b0 5
+0/
+0.
+0-
+b0 ,
+b0 +
+0*
+0)
+0(
+1'
+0&
+0%
+0$
+0#
+0"
+0!
+$end
+#5000
+1-
+#10000
+0-
+#15000
+1-
+#20000
+0-
+1.
+#25000
+1-
+#30000
+0'
+b1 8
+0-
+1/
+#35000
+1&
+1"
+1)
+1#
+1*
+b1 9
+1-
+#40000
+1&
+1)
+1"
+0-
+0/
+#45000
+b1 ,
+b1 5
+1&
+1)
+1"
+b1 7
+1-
+#50000
+0-
+#55000
+b10 ,
+b10 5
+1&
+1)
+1"
+b10 7
+1-
+#60000
+0-
+#65000
+b10 8
+b11 ,
+b11 5
+1&
+1)
+1"
+b11 7
+1-
+#70000
+0-
+#75000
+b1000 ,
+b1000 5
+1&
+1)
+1"
+b0 7
+b10 9
+1-
+#80000
+0-
+#85000
+b1001 ,
+b1001 5
+1&
+1)
+1"
+b1 7
+1-
+#90000
+0-
+#95000
+b1010 ,
+b1010 5
+1&
+1)
+1"
+b10 7
+1-
+#100000
+0-
+#105000
+b11 8
+b1011 ,
+b1011 5
+1&
+1)
+1"
+b11 7
+1-
+#110000
+0-
+#115000
+b0 ,
+b0 5
+0&
+0)
+0"
+b0 7
+b11 9
+1-
+#120000
+0-
+#125000
+1-
+#130000
+0-
+#135000
+1-
+#140000
+0-
+#145000
+1-
+#150000
+0-
+#155000
+1-
+#160000
+0-
+#165000
+1-
+#170000
+0-
+#175000
+1-
+#180000
+0-
+#185000
+1-
+#190000
+0-
+#195000
+1-
+#200000
+0-
+#205000
+1-
+#210000
+0-
+#215000
+1-
+#220000
+0-
+#225000
+1-
+#230000
+0-
+#235000
+1-
+#240000
+0-
+#245000
+1-
+#250000
+0-
+#255000
+1-
+#260000
+0-
+#265000
+1-
+#270000
+0-
+#275000
+1-
+#280000
+0-
+#285000
+1-
+#290000
+0-
+#295000
+1-
+#300000
+0-
+#305000
+1-
+#310000
+0-
+#315000
+1-
+#320000
+0-
+#325000
+1-
+#330000
+0-
+#335000
+1-
+#340000
+0-
+#345000
+1-
+#350000
+0-
+#355000
+1-
+#360000
+0-
+#365000
+1-
+#370000
+0-
+#375000
+1-
+#380000
+0-
+#385000
+1-
+#390000
+0-
+#395000
+1-
+#400000
+0-
+#405000
+1-
+#410000
+0-
+#415000
+1-
+#420000
+0-
+#425000
+1-
+#430000
+0-
+#435000
+1-
+#440000
+0-
+#445000
+1-
+#450000
+0-
+#455000
+1-
+#460000
+0-
+#465000
+1-
+#470000
+0-
+#475000
+1-
+#480000
+0-
+#485000
+1-
+#490000
+0-
+#495000
+1-
+#500000
+0-
+#505000
+1-
+#510000
+0-
+#515000
+1-
+#520000
+0-
+#525000
+1-
+#530000
+0-
+#535000
+1-
+#540000
+0-

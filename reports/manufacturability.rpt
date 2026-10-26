@@ -1,0 +1,19 @@
+Design Name: tpu_core
+Run Directory: /openlane/install/TPU/runs/tpu_v1
+----------------------------------------
+
+Magic DRC Summary:
+Source: /openlane/install/TPU/runs/tpu_v1/reports/signoff/drc.rpt
+Total Magic DRC violations is 0
+----------------------------------------
+
+LVS Summary:
+Source: /openlane/install/TPU/runs/tpu_v1/logs/signoff/39-tpu_core.lef.lvs.log
+Number of nets: 1062                       |Number of nets: 1062                       
+Design is LVS clean.
+----------------------------------------
+
+Antenna Summary:
+Source: /openlane/install/TPU/runs/tpu_v1/logs/signoff/41-arc.log
+Pin violations: 0
+Net violations: 0

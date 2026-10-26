@@ -1,25 +1,32 @@
-/* This is a simple implementation of a multiply-accumulate (MAC) unit in Verilog. 
-The MAC unit takes two inputs, `a` and `b`, and produces an output `y` which is the accumulated product of `a` and `b`. 
-The accumulation can be reset using the `rst` signal, and the operation is synchronized with the clock signal `clk`.
-*/
+// 8-bit signed multiply-accumulate unit with pipelining
+// Input: signed 8-bit operands (a, b)
+// Output: signed 16-bit accumulator (y) + pipelined operands
 module mac(
-    input [7:0]a,b,
+    input signed [7:0] a, b,
     input rst, clk,
-    output [15:0]y,
-    output [7:0] a_out, b_out
+    output signed [15:0] y,
+    output reg signed [7:0] a_out, b_out
 );
 
-wire yin;
+    reg signed [15:0] yin;
+    wire signed [15:0] product;
+    wire signed [16:0] sum;
 
-always @(posedge clk) begin
-    if (rst) begin
-        yin <=0;
+    assign product = a * b;
+    assign sum = yin + product;
+
+    // Saturate to 16-bit signed range
+    assign y = (sum > 16'h7FFF) ? 16'h7FFF :
+               (sum < 16'h8000) ? 16'h8000 : sum[15:0];
+
+    always @(posedge clk) begin
+        if (rst) begin
+            yin <= 16'h0;
+        end else begin
+            yin <= y;
+        end
+        a_out <= a;
+        b_out <= b;
     end
-    else begin
-        yin <= yin + a*b;
-    end
-    y <= yin;
-    a_out <= a;
-    b_out <= b;
-end
+
 endmodule

@@ -1,0 +1,225 @@
+$date
+	Sat Oct 24 02:36:49 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_sram_dp $end
+$var wire 16 ! data_outB [15:0] $end
+$var wire 16 " data_outA [15:0] $end
+$var reg 4 # add_A [3:0] $end
+$var reg 4 $ add_B [3:0] $end
+$var reg 1 % clk_A $end
+$var reg 1 & clk_B $end
+$var reg 1 ' cs_A $end
+$var reg 1 ( cs_B $end
+$var reg 16 ) data_inA [15:0] $end
+$var reg 16 * data_inB [15:0] $end
+$var reg 1 + re_A $end
+$var reg 1 , re_B $end
+$var reg 1 - we_A $end
+$var reg 1 . we_B $end
+$scope module dut $end
+$var wire 4 / add_A [3:0] $end
+$var wire 4 0 add_B [3:0] $end
+$var wire 1 % clk_A $end
+$var wire 1 & clk_B $end
+$var wire 1 ' cs_A $end
+$var wire 1 ( cs_B $end
+$var wire 16 1 data_inA [15:0] $end
+$var wire 16 2 data_inB [15:0] $end
+$var wire 1 + re_A $end
+$var wire 1 , re_B $end
+$var wire 1 - we_A $end
+$var wire 1 . we_B $end
+$var parameter 32 3 depth $end
+$var parameter 32 4 width $end
+$var reg 16 5 data_outA [15:0] $end
+$var reg 16 6 data_outB [15:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b10000 4
+b10000 3
+$end
+#0
+$dumpvars
+bx 6
+bx 5
+bx 2
+bx 1
+bx 0
+bx /
+0.
+0-
+0,
+0+
+bx *
+bx )
+0(
+0'
+0&
+0%
+bx $
+bx #
+bx "
+bx !
+$end
+#5000
+b0 "
+b0 5
+1%
+#7000
+b0 !
+b0 6
+1&
+#10000
+0%
+b1010101010101010 )
+b1010101010101010 1
+b0 #
+b0 /
+1-
+1'
+#14000
+0&
+#15000
+1%
+#20000
+0%
+0-
+#21000
+1&
+#25000
+1%
+#28000
+0&
+#30000
+0%
+b1011101110111011 *
+b1011101110111011 2
+b1 $
+b1 0
+1.
+1(
+#35000
+1%
+1&
+#40000
+0%
+#42000
+0&
+#44000
+0.
+#45000
+1%
+#49000
+1&
+#50000
+0%
+#54000
+1+
+#55000
+b1010101010101010 "
+b1010101010101010 5
+1%
+#56000
+0&
+#60000
+0%
+#63000
+1&
+#64000
+0+
+#65000
+b0 "
+b0 5
+1%
+#70000
+0%
+0&
+#74000
+1,
+#75000
+1%
+#77000
+b1011101110111011 !
+b1011101110111011 6
+1&
+#80000
+0%
+#84000
+0&
+#85000
+1%
+#88000
+0,
+#90000
+0%
+#91000
+b0 !
+b0 6
+1&
+#95000
+1%
+#98000
+b0 $
+b0 0
+1,
+0&
+b1100110011001100 )
+b1100110011001100 1
+b10 #
+b10 /
+1-
+#100000
+0%
+#105000
+b1010101010101010 !
+b1010101010101010 6
+1%
+1&
+#108000
+0,
+0-
+#110000
+0%
+#112000
+0&
+#115000
+1%
+#119000
+b0 !
+b0 6
+1&
+#120000
+0%
+#125000
+1%
+#126000
+0&
+#130000
+0%
+#133000
+1&
+#135000
+1%
+#140000
+0%
+0&
+#145000
+1%
+#147000
+1&
+#150000
+0%
+#154000
+0&
+#155000
+1%
+#158000

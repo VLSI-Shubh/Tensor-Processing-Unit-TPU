@@ -1,0 +1,12 @@
+read_verilog rtl/module/mac.v
+read_verilog rtl/module/systolic_array.v
+read_verilog rtl/module/sram_dp.v
+read_verilog rtl/module/control_unit.v
+read_verilog rtl/module/feeder.v
+read_verilog rtl/module/collector.v
+read_verilog rtl/topmodule/tpu_core.v
+
+hierarchy -top tpu_core
+proc; opt
+select -module tpu_core
+show -format svg -prefix synth/tpu_core
