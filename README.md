@@ -23,7 +23,7 @@ This project takes a small TPU-style matrix engine from RTL to a finished GDSII 
 
 The point of the project was to go through the whole ASIC pipeline once on something with real structure: RTL, simulation, synthesis, floorplan, placement, clock tree, routing and signoff. The design is small on purpose so every step runs in a couple of minutes.
 
-The overall idea was inspired by [TPUv2](https://github.com/WilliamZhang20/TPUv2) by WilliamZhang20, a mini TPU project. This design is a separate implementation with its own RTL and its own physical design run.
+The overall idea was inspired by [TPUv2](https://github.com/WilliamZhang20/TPUv2) by [William Zhang](https://www.linkedin.com/in/williamzhang20/), a mini TPU project. This design is a separate implementation with its own RTL and its own physical design run.
 
 If systolic arrays are new to you, the two original papers by H. T. Kung are in the `doc` folder, and the video below was the starting point for this project:
 
