@@ -1,123 +1,89 @@
-// Top-level TPU Core: 4x4 Systolic Array with SRAM, Control, and I/O
-// Input: 8-bit signed, Output: 16-bit signed
-// Supports streaming of matrices with optional ReLU activation
+// Top-level TPU Core: 4x4 output-stationary systolic array of MAC units
+// Computes C = A * B for signed 8-bit 4x4 matrices; C is signed 16-bit (saturating)
+//
+// Protocol:
+//   1. Pulse start for one cycle while idle (busy low)
+//   2. Stream 16 beats with valid_in high: each beat carries the next element of
+//      A (a_in) and of B (b_in), both in row-major order (a_in = A[idx/4][idx%4],
+//      b_in = B[idx/4][idx%4])
+//   3. Wait: busy stays high; 16 results then stream out on c_out with c_valid,
+//      in row-major order (or transposed when transpose_mode is set)
+//   4. done pulses for one cycle together with the last c_valid; busy then drops
+// relu_mode and transpose_mode must be stable from start until done.
 module tpu_core (
     input clk,
     input rst_n,
 
-    // Input streaming (matrix A rows, then B columns)
+    // Input streaming (one A and one B element per valid beat)
     input signed [7:0] a_in,
     input signed [7:0] b_in,
     input valid_in,
 
-    // Output streaming (matrix C rows)
+    // Output streaming (matrix C elements)
     output signed [15:0] c_out,
     output c_valid,
 
     // Control signals
     input start,           // Pulse to start matrix multiply
     output busy,           // Indicates computation in progress
-    output done,           // Signals result ready
+    output done,           // One-cycle pulse with the last result
     input relu_mode,       // Enable ReLU on output
-    input transpose_mode   // Enable transpose (optional)
+    input transpose_mode   // Stream C transposed
 );
 
-    // Internal signals
-    wire signed [7:0] feeder_data;
-    wire [3:0] feeder_addr;
-    wire signed [7:0] systolic_a_in, systolic_b_in;
-    wire systolic_rst_n;
-    wire signed [15:0] systolic_out;
+    wire clr, wr_en, rd_en, out_en;
+    wire [3:0] wr_idx, out_idx;
+    wire [2:0] rd_t;
+    wire [31:0] a_row, b_col;
+    wire [255:0] c_flat;
 
-    wire we_A, re_A, cs_A;
-    wire [3:0] addr_A;
-    wire signed [15:0] sram_a_out;
-
-    wire we_B, re_B, cs_B;
-    wire [3:0] addr_B;
-    wire signed [15:0] sram_b_out;
-
-    wire load_phase;
-
-    // ===== CONTROL UNIT =====
     control_unit ctrl (
         .clk(clk),
         .rst_n(rst_n),
         .start(start),
+        .valid_in(valid_in),
         .busy(busy),
         .done(done),
-        .we_A(we_A),
-        .re_A(re_A),
-        .cs_A(cs_A),
-        .addr_A(addr_A),
-        .we_B(we_B),
-        .re_B(re_B),
-        .cs_B(cs_B),
-        .addr_B(addr_B),
-        .sys_rst_n(systolic_rst_n),
-        .load_phase(load_phase)
+        .clr(clr),
+        .wr_en(wr_en),
+        .wr_idx(wr_idx),
+        .rd_en(rd_en),
+        .rd_t(rd_t),
+        .out_en(out_en),
+        .out_idx(out_idx)
     );
 
-    // ===== INPUT FEEDER =====
     feeder input_feeder (
+        .clk(clk),
+        .wr_en(wr_en),
+        .wr_idx(wr_idx),
         .a_in(a_in),
         .b_in(b_in),
-        .addr_ctrl(addr_A),
-        .data_to_sram(feeder_data),
-        .addr_out(feeder_addr)
+        .rd_en(rd_en),
+        .rd_t(rd_t),
+        .a_row(a_row),
+        .b_col(b_col)
     );
-
-    // ===== DUAL PORT SRAM (16 words x 16-bit) =====
-    // Addresses 0-3: Matrix A (4 rows)
-    // Addresses 4-7: Matrix B (4 columns)
-    // Addresses 8-15: Results C (4 rows)
-    sram_dp #(
-        .depth(16),
-        .width(16)
-    ) memory (
-        // Port A: Input streaming
-        .data_inA({{8{feeder_data[7]}}, feeder_data}),  // Sign-extend 8-bit to 16-bit
-        .clk_A(clk),
-        .we_A(we_A),
-        .re_A(re_A),
-        .cs_A(cs_A),
-        .add_A(feeder_addr),
-        .data_outA(sram_a_out),
-
-        // Port B: Output streaming
-        .data_inB(systolic_out),
-        .clk_B(clk),
-        .we_B(we_B),
-        .re_B(re_B),
-        .cs_B(cs_B),
-        .add_B(addr_B),
-        .data_outB(sram_b_out)
-    );
-
-    // ===== SYSTOLIC ARRAY =====
-    // Reads from SRAM Port A (addresses 0-7 for A and B)
-    // Note: In a real design, would need separate logic to multiplex systolic inputs
-    // For now, simplified: directly connect to streaming inputs during compute
-    assign systolic_a_in = a_in;
-    assign systolic_b_in = b_in;
 
     systolic_array systolic (
-        .a(systolic_a_in),
-        .b(systolic_b_in),
-        .rst_n(systolic_rst_n),
         .clk(clk),
-        .y(systolic_out)
+        .rst_n(rst_n),
+        .clr(clr),
+        .a_row(a_row),
+        .b_col(b_col),
+        .c_flat(c_flat)
     );
 
-    // ===== OUTPUT COLLECTOR =====
     collector output_collector (
         .clk(clk),
         .rst_n(rst_n),
-        .data_from_sram(sram_b_out),
-        .sram_valid(re_B),
+        .c_flat(c_flat),
+        .sel(out_idx),
+        .en(out_en),
         .result_out(c_out),
         .result_valid(c_valid),
-        .relu_mode(relu_mode)
+        .relu_mode(relu_mode),
+        .transpose_mode(transpose_mode)
     );
 
 endmodule

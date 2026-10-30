@@ -1,77 +1,46 @@
-// 4x4 Systolic Array for matrix multiplication
-// Computes C = A * B where A, B, C are 4x4 matrices of signed 8-bit values
-// Outputs C are signed 16-bit values
+// 4x4 output-stationary systolic array built from 16 mac processing elements
+// Computes C = A * B; PE(i,j) accumulates C[i][j] = sum_k A[i][k] * B[k][j]
 //
 // Data flow:
-//   - A flows left-to-right (row-wise)
-//   - B flows top-to-bottom (column-wise)
-//   - Takes 7 cycles to fill the pipeline, then produces one row of C per cycle
-//
+//   - A values enter on the left (a_row[i] feeds row i) and move right
+//   - B values enter on the top (b_col[j] feeds column j) and move down
+//   - Inputs must already be skewed: row i / column j delayed by i / j cycles,
+//     so A[i][k] and B[k][j] meet at PE(i,j) on the same cycle (see feeder.v)
+//   - All 16 accumulators are exposed on c_flat; c_flat[16*(4*i+j) +: 16] = C[i][j]
 module systolic_array (
-    input signed [7:0] a, b,
-    input rst_n, clk,
-    output signed [15:0] y
+    input clk,
+    input rst_n,
+    input clr,                    // synchronous clear of all PEs
+    input [31:0] a_row,           // 4 x signed 8-bit, row i at [8*i +: 8]
+    input [31:0] b_col,           // 4 x signed 8-bit, column j at [8*j +: 8]
+    output [255:0] c_flat
 );
 
-    // Shift registers for A (4 stages)
-    reg signed [7:0] a_stage [0:3];
+    // a_h: 4 rows x 5 taps, tap j is the input of PE(i,j), tap 4 is unused
+    // b_v: 5 rows x 4 columns, row i is the input of PE(i,j), row 4 is unused
+    wire [159:0] a_h;
+    wire [159:0] b_v;
 
-    // Shift registers for B (4 stages)
-    reg signed [7:0] b_stage [0:3];
-
-    // Partial sums (4x4 array)
-    reg signed [15:0] p_reg [0:3][0:3];
-
-    integer i, j;
-
-    // Shift in A operands (left to right)
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            a_stage[0] <= 8'sh0;
-            a_stage[1] <= 8'sh0;
-            a_stage[2] <= 8'sh0;
-            a_stage[3] <= 8'sh0;
-        end else begin
-            a_stage[0] <= a;
-            a_stage[1] <= a_stage[0];
-            a_stage[2] <= a_stage[1];
-            a_stage[3] <= a_stage[2];
-        end
-    end
-
-    // Shift in B operands (top to bottom)
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            b_stage[0] <= 8'sh0;
-            b_stage[1] <= 8'sh0;
-            b_stage[2] <= 8'sh0;
-            b_stage[3] <= 8'sh0;
-        end else begin
-            b_stage[0] <= b;
-            b_stage[1] <= b_stage[0];
-            b_stage[2] <= b_stage[1];
-            b_stage[3] <= b_stage[2];
-        end
-    end
-
-    // Systolic computation - multiply and accumulate
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            for (i = 0; i < 4; i = i + 1) begin
-                for (j = 0; j < 4; j = j + 1) begin
-                    p_reg[i][j] <= 16'sh0;
+    genvar i, j;
+    generate
+        for (i = 0; i < 4; i = i + 1) begin : row
+            assign a_h[8*(5*i) +: 8] = a_row[8*i +: 8];
+            for (j = 0; j < 4; j = j + 1) begin : col
+                if (i == 0) begin : top_edge
+                    assign b_v[8*j +: 8] = b_col[8*j +: 8];
                 end
-            end
-        end else begin
-            for (i = 0; i < 4; i = i + 1) begin
-                for (j = 0; j < 4; j = j + 1) begin
-                    p_reg[i][j] <= p_reg[i][j] + (a_stage[i] * b_stage[j]);
-                end
+                mac pe (
+                    .clk(clk),
+                    .rst_n(rst_n),
+                    .clr(clr),
+                    .a(a_h[8*(5*i + j) +: 8]),
+                    .b(b_v[8*(4*i + j) +: 8]),
+                    .a_out(a_h[8*(5*i + j + 1) +: 8]),
+                    .b_out(b_v[8*(4*(i + 1) + j) +: 8]),
+                    .acc(c_flat[16*(4*i + j) +: 16])
+                );
             end
         end
-    end
-
-    // Output the result at position [3][3]
-    assign y = p_reg[3][3];
+    endgenerate
 
 endmodule

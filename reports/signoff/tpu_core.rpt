@@ -1,17 +1,17 @@
-CVC: Log output to /openlane/install/TPU/runs/tpu_v1/reports/signoff/tpu_core.rpt
-CVC: Error output to /openlane/install/TPU/runs/tpu_v1/reports/signoff/tpu_core.rpt.error.gz
-CVC: Debug output to /openlane/install/TPU/runs/tpu_v1/reports/signoff/tpu_core.rpt.debug.gz
+CVC: Log output to /openlane/designs/TPU/runs/tpu_v2/reports/signoff/tpu_core.rpt
+CVC: Error output to /openlane/designs/TPU/runs/tpu_v2/reports/signoff/tpu_core.rpt.error.gz
+CVC: Debug output to /openlane/designs/TPU/runs/tpu_v2/reports/signoff/tpu_core.rpt.debug.gz
 CVC: Circuit Validation Check  Version 1.1.4
-CVC: Start: Sat Oct 24 02:26:24 2026
+CVC: Start: Fri Oct 30 20:47:51 2026
 
 Using the following parameters for CVC (Circuit Validation Check) from /home/shupadhy/.ciel/sky130A/libs.tech/openlane/cvc/cvcrc
 CVC_TOP = 'tpu_core'
-CVC_NETLIST = '/openlane/install/TPU/runs/tpu_v1/tmp/signoff/tpu_core.cdl'
+CVC_NETLIST = '/openlane/designs/TPU/runs/tpu_v2/tmp/signoff/tpu_core.cdl'
 CVC_MODE = 'tpu_core'
 CVC_MODEL_FILE = '/home/shupadhy/.ciel/sky130A/libs.tech/openlane/cvc/models'
-CVC_POWER_FILE = '/openlane/install/TPU/runs/tpu_v1/tmp/signoff/tpu_core.power'
+CVC_POWER_FILE = '/openlane/designs/TPU/runs/tpu_v2/tmp/signoff/tpu_core.power'
 CVC_FUSE_FILE = ''
-CVC_REPORT_FILE = '/openlane/install/TPU/runs/tpu_v1/reports/signoff/tpu_core.rpt'
+CVC_REPORT_FILE = '/openlane/designs/TPU/runs/tpu_v2/reports/signoff/tpu_core.rpt'
 CVC_REPORT_TITLE = 'CVC $CVC_TOP'
 CVC_CIRCUIT_ERROR_LIMIT = '100'
 CVC_SEARCH_LIMIT = '100'
@@ -45,7 +45,7 @@ End of parameters
 
 CVC: Reading device model settings...
 CVC: Reading power settings...
-CVC: Parsing netlist /openlane/install/TPU/runs/tpu_v1/tmp/signoff/tpu_core.cdl
-Cdl fixed data size 61771
-Usage CDL: Time: 0  Memory: 15704  I/O: 4328  Swap: 0
+CVC: Parsing netlist /openlane/designs/TPU/runs/tpu_v2/tmp/signoff/tpu_core.cdl
+Cdl fixed data size 842397
+Usage CDL: Time: 0  Memory: 81760  I/O: 4328  Swap: 0
 CVC: Counting and linking...

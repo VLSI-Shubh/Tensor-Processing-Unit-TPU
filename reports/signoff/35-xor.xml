@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <report-database>
- <description>XOR /openlane/install/TPU/runs/tpu_v1/results/signoff/tpu_core.gds vs. /openlane/install/TPU/runs/tpu_v1/results/signoff/tpu_core.klayout.gds</description>
+ <description>XOR /openlane/designs/TPU/runs/tpu_v2/results/signoff/tpu_core.gds vs. /openlane/designs/TPU/runs/tpu_v2/results/signoff/tpu_core.klayout.gds</description>
  <original-file/>
  <generator>drc: script='/openlane/scripts/klayout/xor.drc'</generator>
  <top-cell>tpu_core</top-cell>
@@ -214,6 +214,12 @@
   <category>
    <name>78/44</name>
    <description>XOR data for layer 78/44</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>81/23</name>
+   <description>XOR data for layer 81/23</description>
    <categories>
    </categories>
   </category>

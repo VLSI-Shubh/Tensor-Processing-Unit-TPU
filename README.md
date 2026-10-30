@@ -6,6 +6,7 @@
 ![Clock Tree Synthesis](https://img.shields.io/badge/Clock%20Tree%20Synthesis-Completed-brightgreen)
 ![Routing](https://img.shields.io/badge/Routing-Completed-brightgreen)
 ![Physical Signoff](https://img.shields.io/badge/Physical%20Signoff-Completed-brightgreen)
+![FPGA Implementation](https://img.shields.io/badge/FPGA%20Implementation-In%20Progress-yellow)
 
 
 # 4x4 Systolic Array TPU: RTL to GDSII Implementation
@@ -13,7 +14,7 @@
 
 <p align="center">
   <img src="asset/gds_layout.png" alt="GDS Layout" width="700">
-  <br><em>Final tpu_core layout, Sky130 PDK (OpenLane flow). Die size is about 159 x 170 um.</em>
+  <br><em>Final tpu_core layout, Sky130 PDK (OpenLane flow). Die size is about 630 x 640 um.</em>
 </p>
 
 
@@ -21,9 +22,9 @@
 
 This project takes a small TPU-style matrix engine from RTL to a finished GDSII layout. The core is a 4x4 grid of multiply-accumulate cells that works alongside a dual-port SRAM and is sequenced by a state machine. It was synthesized with Yosys and then pushed through the OpenLane/OpenROAD flow on the SkyWater SKY130A PDK.
 
-The point of the project was to go through the whole ASIC pipeline once on something with real structure: RTL, simulation, synthesis, floorplan, placement, clock tree, routing and signoff. The design is small on purpose so every step runs in a couple of minutes.
+The point of the project was to go through the whole ASIC pipeline once on something with real structure: RTL, simulation, synthesis, floorplan, placement, clock tree, routing and signoff. The design is small on purpose so every step runs in minutes.
 
-The overall idea was inspired by [TPUv2](https://github.com/WilliamZhang20/TPUv2) by [William Zhang](https://www.linkedin.com/in/williamzhang20/), a mini TPU project. This design is a separate implementation with its own RTL and its own physical design run.
+The overall idea was inspired by [TPUv2](https://github.com/WilliamZhang20/TPUv2) by WilliamZhang20, a mini TPU project. This design is a separate implementation with its own RTL and its own physical design run.
 
 If systolic arrays are new to you, the two original papers by H. T. Kung are in the `doc` folder, and the video below was the starting point for this project:
 
@@ -45,28 +46,28 @@ Two signed 8-bit streams (`a_in`, `b_in`) go in, and a signed 16-bit stream (`c_
 
 A five-state FSM that sequences everything:
 - IDLE, waiting for `start`
-- LOAD_A, four cycles, writes SRAM addresses 0 to 3
-- LOAD_B, four cycles, writes SRAM addresses 4 to 7
-- COMPUTE, lets the array run
-- READ, four cycles, reads results out of SRAM port B
+- LOAD, 16 cycles, writes one element of A and one element of B per cycle into the operand memory
+- COMPUTE, 14 cycles, reads the operands out with the systolic skew while the array runs
+- READ, 16 cycles, streams the results out
+- FIN, one cycle, where `done` pulses
 
-It also drives `busy` and `done`, the SRAM enables and the array reset.
+It also drives `busy` and `done`, the memory addressing and the array clear.
 
 ### Feeder
 
-A small multiplexer. Bit 3 of the SRAM address decides whether `a_in` or `b_in` is written, so addresses 0 to 7 pick up A then B.
+Holds the input matrices in eight small banks, four for the rows of A and four for the columns of B. During LOAD it steers each incoming element to its bank. During COMPUTE it reads the banks with a one-cycle stagger per row and per column, so A and B values reach each cell of the array at the right time.
 
 ### Dual-Port SRAM
 
-16 words of 16 bits with two independent ports, each with its own clock and enables. The memory map is A at addresses 0 to 3, B at 4 to 7 and results at 8 to 15.
+The banks inside the feeder are instances of the same dual-port SRAM module, four words of 8 bits each. Port A writes the incoming matrices and port B reads them out for the array. Each port has its own clock and enables.
 
 ### Systolic Array
 
-Two 4-stage shift registers carry the A and B operands. Sixteen 16-bit accumulators each add the product of one A tap and one B tap every cycle. The top level takes its output from the bottom-right accumulator.
+Sixteen `mac` cells in a 4x4 grid. A values move left to right, B values move top to bottom, and every cell keeps a 16-bit saturating accumulator for its own element of C. When the data has rippled through, all 16 results are held in the array.
 
 ### Collector
 
-Registers the SRAM port B data on its way out and optionally applies ReLU, which simply forces negative values to zero.
+Picks one of the 16 results per cycle and optionally applies ReLU, which simply forces negative values to zero. With `transpose_mode` set it streams the result in transposed order. `c_valid` is aligned with `c_out`.
 
 
 ## 3. RTL Implementation
@@ -85,7 +86,7 @@ rtl/
     └── tpu_core.v
 ```
 
-`mac.v` is a standalone saturating MAC. The systolic array does its own multiply-accumulate inline, so `mac.v` is compiled but not instantiated. Module-by-module notes are in [rtl/readme.md](rtl/readme.md).
+`mac.v` is the saturating multiply-accumulate cell, and `systolic_array.v` instantiates 16 of them. Module-by-module notes are in [rtl/readme.md](rtl/readme.md).
 
 
 ## 4. Functional Verification
@@ -94,6 +95,7 @@ Testbenches live under:
 ```
 verif/functionalVerification/
 ├── modules/
+│   ├── tb_mac.v
 │   ├── tb_systolic_array.v
 │   ├── tb_sram_dp.v
 │   └── tb_control_unit.v
@@ -101,7 +103,7 @@ verif/functionalVerification/
     └── tb_tpu_core.v
 ```
 
-Each testbench drives stimulus and dumps a VCD file that you open in GTKWave. Details and what to look at in each waveform are in [verif/readme.md](verif/readme.md).
+Each testbench drives stimulus and dumps a VCD file that you open in GTKWave. The MAC, array, control unit and top-level testbenches also check their results against a software reference and print PASS or FAIL. Details and what to look at in each waveform are in [verif/readme.md](verif/readme.md).
 
 
 ## 5. Logic Synthesis (Yosys)
@@ -134,7 +136,7 @@ The physical flow used the `sky130_fd_sc_hd` standard cell library and the setti
 - Timing-driven placement
 - Synthesis strategy `DELAY 2`, max fanout 6
 
-The flow ran start to finish in under two minutes and covers floorplanning, power grid, placement, clock tree synthesis, global and detailed routing, RC extraction, DRC, LVS and antenna checks. Reports from each stage are in `reports/`, and the extracted parasitics and timing files are in `routing/` and `signoff/`.
+The flow ran start to finish in about 20 minutes and covers floorplanning, power grid, placement, clock tree synthesis, global and detailed routing, RC extraction, DRC, LVS and antenna checks. Reports from each stage are in `reports/`, and the extracted parasitics and timing files are in `routing/` and `signoff/`.
 
 Final layout:
 ```
@@ -149,34 +151,34 @@ You can also [open the layout in your browser](https://gds-viewer.tinytapeout.co
 ### Target Clock
 - 10 ns period (100 MHz)
 
-### Timing (STA after RC extraction)
-- Setup worst slack: 5.24 ns
-- Hold worst slack: 0.35 ns
+### Timing (STA after RC extraction, typical corner)
+- Setup worst slack: 4.19 ns
+- Hold worst slack: 0.29 ns
 - WNS and TNS: 0.00
-- Clock skew after CTS: about 0.03 ns
+- Clock skew after CTS: about 0.23 ns
 
 ### Power (typical corner)
-- Internal: 1.66e-03
-- Switching: 1.06e-03
-- Leakage: 5.98e-09
-- Total: 2.72e-03 (units as printed by OpenSTA, see `reports/signoff/31-rcx_sta.power.rpt`)
+- Internal: 2.11e-02
+- Switching: 2.79e-02
+- Leakage: 9.30e-08
+- Total: 4.90e-02 (Watts as printed by OpenSTA, see `reports/signoff/31-rcx_sta.power.rpt`)
 
 ### Area and Utilization
-- Die: about 159 x 170 um (0.027 mm2)
-- Core area: 21,688 um2
-- Placement utilization: 41.94%
-- Logic cells after synthesis: 841
-- Total instances: 2,923 (including tap, decap and fill cells)
+- Die: about 630 x 640 um (0.403 mm2)
+- Core area: 381,726 um2
+- Placement utilization: 41.0%
+- Logic cells after synthesis: 15,913
+- Total instances: 48,922 (including tap, decap and fill cells)
 
 ### Routing
-- Wirelength: 24,749
-- Vias: 6,478
+- Wirelength: 544,540
+- Vias: 133,733
 - Detailed routing violations: 0
 
 ### Signoff
 - DRC (Magic): 0 violations
 - LVS: clean, 0 errors
-- Antenna: 0 pin and 0 net violations
+- Antenna: see `reports/manufacturability.rpt`
 - Final GDSII: [gds/tpu_core.gds](gds/tpu_core.gds)
 
 The summary of the three signoff checks is in `reports/manufacturability.rpt`.
@@ -187,6 +189,7 @@ The summary of the three signoff checks is in `reports/manufacturability.rpt`.
 TPU/
 ├── asset/                images used in the READMEs
 ├── doc/                  papers and references
+├── fpga/                 TinyFPGA BX top level (main.v), pin file and testbench
 ├── gds/                  final GDSII
 ├── reports/              OpenLane reports by stage
 │   ├── synthesis/
@@ -216,7 +219,7 @@ TPU/
 
 ## 9. Running Simulation and Synthesis
 
-This runs the four testbenches and the Yosys synthesis. It does not run OpenLane. The simplest route is Docker, since the image already has Icarus Verilog, Yosys, Graphviz and GTKWave.
+This runs the five testbenches and the Yosys synthesis. It does not run OpenLane. The simplest route is Docker, since the image already has Icarus Verilog, Yosys, Graphviz and GTKWave.
 
 From the repository root, build the image once:
 ```bash
@@ -233,7 +236,7 @@ docker run --rm -v "$(pwd):/design" tpu-design bash run_sim.sh
 docker run --rm -v "${PWD}:/design" tpu-design bash run_sim.sh
 ```
 
-You can also run `./run_sim.sh` directly if you have a recent `iverilog` (one that accepts `-g2012`) and `yosys` installed.
+You can also run `./run_sim.sh` directly if you have `iverilog` and `yosys` installed.
 
 **Produces:**
 ```

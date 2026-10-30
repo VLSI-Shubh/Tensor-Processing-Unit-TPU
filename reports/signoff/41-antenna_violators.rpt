@@ -1,0 +1,14 @@
+Partial/Required:  2.34, Required:    400.0, Partial:   937.89, Net: output_collector.c_flat\[54\], Pin: _29197_/A1, Layer: met1
+Partial/Required:  2.17, Required:    400.0, Partial:    867.8, Net: net26, Pin: output26/A, Layer: met1
+Partial/Required:  2.13, Required:    400.0, Partial:   853.39, Net: output_collector.c_flat\[2\], Pin: _29113_/C, Layer: met2
+Partial/Required:  1.48, Required:    400.0, Partial:   591.44, Net: clknet_0_clk, Pin: clkbuf_2_3_0_clk/A, Layer: met3
+Partial/Required:  1.46, Required:    400.0, Partial:    583.0, Net: net11, Pin: _30050_/A1, Layer: met1
+Partial/Required:  1.42, Required:    400.0, Partial:   567.83, Net: _03693_, Pin: _29289_/A0, Layer: met2
+Partial/Required:  1.32, Required:    400.0, Partial:   529.33, Net: output_collector.c_flat\[101\], Pin: _29173_/A0, Layer: met1
+Partial/Required:  1.28, Required:    400.0, Partial:   510.33, Net: output_collector.c_flat\[166\], Pin: _19832_/C, Layer: met1
+Partial/Required:  1.25, Required:    400.0, Partial:   501.11, Net: net40, Pin: output40/A, Layer: met1
+Partial/Required:  1.22, Required:    400.0, Partial:   489.56, Net: output_collector.c_flat\[103\], Pin: _29217_/C, Layer: met1
+Partial/Required:  1.21, Required:    400.0, Partial:    485.0, Net: _06743_, Pin: _29823_/A, Layer: met1
+Partial/Required:  1.08, Required:    400.0, Partial:   432.61, Net: output_collector.c_flat\[40\], Pin: _29242_/C, Layer: met2
+Partial/Required:  1.03, Required:    400.0, Partial:    410.5, Net: output_collector.c_flat\[69\], Pin: _29174_/C, Layer: met2
+Partial/Required:  1.00, Required:    400.0, Partial:   400.38, Net: _08742_, Pin: _17782_/A, Layer: met3

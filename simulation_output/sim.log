@@ -1,0 +1,14 @@
+VCD info: dumpfile tb_mac.vcd opened for output.
+PASS: tb_mac, 0 errors
+verif/functionalVerification/modules/tb_mac.v:80: $finish called at 207000 (1ps)
+VCD info: dumpfile tb_systolic_array.vcd opened for output.
+PASS: tb_systolic_array, 352 checks, 0 errors
+verif/functionalVerification/modules/tb_systolic_array.v:90: $finish called at 4190000 (1ps)
+VCD info: dumpfile tb_sram_dp.vcd opened for output.
+verif/functionalVerification/modules/tb_sram_dp.v:60: $finish called at 158000 (1ps)
+VCD info: dumpfile tb_control_unit.vcd opened for output.
+PASS: tb_control_unit, 0 errors
+verif/functionalVerification/modules/tb_control_unit.v:95: $finish called at 1200000 (1ps)
+VCD info: dumpfile tb_tpu_core.vcd opened for output.
+PASS: tb_tpu_core, 768 output checks, 0 errors
+verif/functionalVerification/topmodule/tb_tpu_core.v:258: $finish called at 25250000 (1ps)

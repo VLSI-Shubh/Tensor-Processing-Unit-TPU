@@ -3,11 +3,11 @@
 /* dynports =  1  */
 /* hdlname = "\\sram_dp" */
 /* src = "rtl/module/sram_dp.v:3.1-46.10" */
-module \$paramod$60abf439344aa70af45b207dff28b12c895f5a44\sram_dp (data_inA, clk_A, we_A, re_A, cs_A, add_A, data_outA, data_inB, clk_B, we_B, re_B, cs_B, add_B, data_outB);
+module \$paramod$7182423712c14b2ce6560f502be0da4c9d8e2081\sram_dp (data_inA, clk_A, we_A, re_A, cs_A, add_A, data_outA, data_inB, clk_B, we_B, re_B, cs_B, add_B, data_outB);
   /* src = "rtl/module/sram_dp.v:23.5-32.8" */
-  wire [15:0] _00_;
+  wire [7:0] _00_;
   /* src = "rtl/module/sram_dp.v:35.5-44.8" */
-  wire [15:0] _01_;
+  wire [7:0] _01_;
   wire _02_;
   wire _03_;
   /* src = "rtl/module/sram_dp.v:27.13-27.25" */
@@ -15,11 +15,11 @@ module \$paramod$60abf439344aa70af45b207dff28b12c895f5a44\sram_dp (data_inA, clk
   /* src = "rtl/module/sram_dp.v:39.13-39.25" */
   wire _05_;
   /* src = "rtl/module/sram_dp.v:10.31-10.36" */
-  input [3:0] add_A;
-  wire [3:0] add_A;
+  input [1:0] add_A;
+  wire [1:0] add_A;
   /* src = "rtl/module/sram_dp.v:16.31-16.36" */
-  input [3:0] add_B;
-  wire [3:0] add_B;
+  input [1:0] add_B;
+  wire [1:0] add_B;
   /* src = "rtl/module/sram_dp.v:9.11-9.16" */
   input clk_A;
   wire clk_A;
@@ -33,17 +33,17 @@ module \$paramod$60abf439344aa70af45b207dff28b12c895f5a44\sram_dp (data_inA, clk
   input cs_B;
   wire cs_B;
   /* src = "rtl/module/sram_dp.v:8.23-8.31" */
-  input [15:0] data_inA;
-  wire [15:0] data_inA;
+  input [7:0] data_inA;
+  wire [7:0] data_inA;
   /* src = "rtl/module/sram_dp.v:14.23-14.31" */
-  input [15:0] data_inB;
-  wire [15:0] data_inB;
+  input [7:0] data_inB;
+  wire [7:0] data_inB;
   /* src = "rtl/module/sram_dp.v:11.28-11.37" */
-  output [15:0] data_outA;
-  wire [15:0] data_outA;
+  output [7:0] data_outA;
+  wire [7:0] data_outA;
   /* src = "rtl/module/sram_dp.v:17.28-17.37" */
-  output [15:0] data_outB;
-  wire [15:0] data_outB;
+  output [7:0] data_outB;
+  wire [7:0] data_outB;
   /* src = "rtl/module/sram_dp.v:9.24-9.28" */
   input re_A;
   wire re_A;
@@ -57,27 +57,27 @@ module \$paramod$60abf439344aa70af45b207dff28b12c895f5a44\sram_dp (data_inA, clk
   input we_B;
   wire we_B;
   /* src = "rtl/module/sram_dp.v:20.21-20.24" */
-  reg [15:0] mem [15:0];
+  reg [7:0] mem [3:0];
   always @(posedge clk_B) begin
-    if (_01_[15])
+    if (_01_[7])
       mem[add_B] <= data_inB;
   end
   always @(posedge clk_A) begin
-    if (_00_[15])
+    if (_00_[7])
       mem[add_A] <= data_inA;
   end
-  reg [15:0] _12_;
-  reg [15:0] _13_;
+  reg [7:0] _12_;
+  reg [7:0] _13_;
   always @(posedge clk_A) begin
     if (_03_)
-      _13_ <= 16'h0000;
+      _13_ <= 8'h00;
     else begin
       _13_ <= mem[add_A];
     end
   end
   always @(posedge clk_B) begin
     if (_02_)
-      _12_ <= 16'h0000;
+      _12_ <= 8'h00;
     else begin
       _12_ <= mem[add_B];
     end
@@ -86,465 +86,878 @@ module \$paramod$60abf439344aa70af45b207dff28b12c895f5a44\sram_dp (data_inA, clk
   assign data_outA = _13_;
   assign _02_ = ! _05_;
   assign _03_ = ! _04_;
-  assign _00_[15] = cs_A && /* src = "rtl/module/sram_dp.v:24.13-24.25" */ we_A;
+  assign _00_[7] = cs_A && /* src = "rtl/module/sram_dp.v:24.13-24.25" */ we_A;
   assign _04_ = cs_A && /* src = "rtl/module/sram_dp.v:27.13-27.25" */ re_A;
-  assign _01_[15] = cs_B && /* src = "rtl/module/sram_dp.v:36.13-36.25" */ we_B;
+  assign _01_[7] = cs_B && /* src = "rtl/module/sram_dp.v:36.13-36.25" */ we_B;
   assign _05_ = cs_B && /* src = "rtl/module/sram_dp.v:39.13-39.25" */ re_B;
-  assign _00_[14:0] = { _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15], _00_[15] };
-  assign _01_[14:0] = { _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15], _01_[15] };
+  assign _00_[6:0] = { _00_[7], _00_[7], _00_[7], _00_[7], _00_[7], _00_[7], _00_[7] };
+  assign _01_[6:0] = { _01_[7], _01_[7], _01_[7], _01_[7], _01_[7], _01_[7], _01_[7] };
 endmodule
 
-/* src = "rtl/module/collector.v:3.1-36.10" */
-module collector(clk, rst_n, data_from_sram, sram_valid, result_out, result_valid, relu_mode);
-  /* src = "rtl/module/collector.v:23.25-23.69" */
+/* src = "rtl/module/collector.v:4.1-33.10" */
+module collector(clk, rst_n, c_flat, sel, en, result_out, result_valid, relu_mode, transpose_mode);
+  /* src = "rtl/module/collector.v:23.5-31.8" */
   wire [15:0] _0_;
-  /* src = "rtl/module/collector.v:19.24-19.33" */
-  wire [15:0] activated;
-  /* src = "rtl/module/collector.v:4.11-4.14" */
+  /* src = "rtl/module/collector.v:28.28-28.48" */
+  wire _1_;
+  /* src = "rtl/module/collector.v:8.19-8.25" */
+  input [255:0] c_flat;
+  wire [255:0] c_flat;
+  /* src = "rtl/module/collector.v:5.11-5.14" */
   input clk;
   wire clk;
-  /* src = "rtl/module/collector.v:8.25-8.39" */
-  input [15:0] data_from_sram;
-  wire [15:0] data_from_sram;
+  /* src = "rtl/module/collector.v:10.11-10.13" */
+  input en;
+  wire en;
+  /* src = "rtl/module/collector.v:20.16-20.19" */
+  wire [3:0] idx;
+  /* src = "rtl/module/collector.v:21.24-21.27" */
+  wire [15:0] raw;
   /* src = "rtl/module/collector.v:16.11-16.20" */
   input relu_mode;
   wire relu_mode;
-  /* src = "rtl/module/collector.v:12.30-12.40" */
+  /* src = "rtl/module/collector.v:13.30-13.40" */
   output [15:0] result_out;
   reg [15:0] result_out;
-  /* src = "rtl/module/collector.v:13.16-13.28" */
+  /* src = "rtl/module/collector.v:14.16-14.28" */
   output result_valid;
   reg result_valid;
-  /* src = "rtl/module/collector.v:5.11-5.16" */
+  /* src = "rtl/module/collector.v:6.11-6.16" */
   input rst_n;
   wire rst_n;
-  /* src = "rtl/module/collector.v:9.11-9.21" */
-  input sram_valid;
-  wire sram_valid;
-  /* src = "rtl/module/collector.v:26.5-34.8" */
+  /* src = "rtl/module/collector.v:9.17-9.20" */
+  input [3:0] sel;
+  wire [3:0] sel;
+  /* src = "rtl/module/collector.v:17.11-17.25" */
+  input transpose_mode;
+  wire transpose_mode;
+  assign _1_ = relu_mode && /* src = "rtl/module/collector.v:28.28-28.48" */ raw[15];
+  /* src = "rtl/module/collector.v:23.5-31.8" */
   always @(posedge clk, negedge rst_n)
     if (!rst_n) result_out <= 16'h0000;
-    else result_out <= activated;
-  /* src = "rtl/module/collector.v:26.5-34.8" */
+    else result_out <= _0_;
+  /* src = "rtl/module/collector.v:23.5-31.8" */
   always @(posedge clk, negedge rst_n)
     if (!rst_n) result_valid <= 1'h0;
-    else result_valid <= sram_valid;
-  assign activated = relu_mode ? /* src = "rtl/module/collector.v:22.24-24.38" */ { 1'h0, _0_[14:0] } : data_from_sram;
-  assign _0_[14:0] = data_from_sram[15] ? /* src = "rtl/module/collector.v:23.25-23.69" */ 15'h0000 : data_from_sram[14:0];
-  assign _0_[15] = 1'h0;
+    else result_valid <= en;
+  wire [255:0] _8_ = c_flat;
+  assign raw = _8_[$signed({ 24'h000000, idx, 4'h0 }) +: 16];
+  assign idx = transpose_mode ? /* src = "rtl/module/collector.v:20.22-20.65" */ { sel[1:0], sel[3:2] } : sel;
+  assign _0_ = _1_ ? /* src = "rtl/module/collector.v:28.27-28.64" */ 16'h0000 : raw;
 endmodule
 
-/* src = "rtl/module/control_unit.v:3.1-115.10" */
-module control_unit(clk, rst_n, start, busy, done, we_A, re_A, cs_A, addr_A, we_B, re_B, cs_B, addr_B, sys_rst_n, load_phase);
-  /* src = "rtl/module/control_unit.v:35.5-46.8" */
+/* src = "rtl/module/control_unit.v:9.1-100.10" */
+module control_unit(clk, rst_n, start, valid_in, busy, done, clr, wr_en, wr_idx, rd_en, rd_t, out_en, out_idx);
+  /* src = "rtl/module/control_unit.v:41.5-88.8" */
   wire [3:0] _00_;
-  /* src = "rtl/module/control_unit.v:48.5-73.8" */
+  /* src = "rtl/module/control_unit.v:41.5-88.8" */
   wire [2:0] _01_;
-  /* src = "rtl/module/control_unit.v:48.5-73.8" */
-  wire [2:0] _02_;
-  /* src = "rtl/module/control_unit.v:48.5-73.8" */
-  wire [2:0] _03_;
-  /* src = "rtl/module/control_unit.v:48.5-73.8" */
-  wire [2:0] _04_;
-  /* src = "rtl/module/control_unit.v:48.5-73.8" */
-  wire [2:0] _05_;
-  /* src = "rtl/module/control_unit.v:44.32-44.50" */
-  wire [3:0] _06_;
+  /* src = "rtl/module/control_unit.v:58.36-58.46" */
+  wire [3:0] _02_;
+  wire _03_;
+  wire _04_;
+  wire _05_;
+  wire _06_;
   wire _07_;
-  /* src = "rtl/module/control_unit.v:56.21-56.37" */
   wire _08_;
-  /* src = "rtl/module/control_unit.v:65.21-65.38" */
   wire _09_;
-  /* src = "rtl/module/control_unit.v:78.17-78.30" */
+  /* src = "rtl/module/control_unit.v:54.29-54.41" */
   wire _10_;
-  /* src = "rtl/module/control_unit.v:43.22-43.55" */
+  /* src = "rtl/module/control_unit.v:63.25-63.37" */
   wire _11_;
-  /* src = "rtl/module/control_unit.v:41.17-41.36" */
+  /* src = "rtl/module/control_unit.v:95.22-95.38" */
   wire _12_;
-  /* src = "rtl/module/control_unit.v:43.22-43.38" */
+  /* src = "rtl/module/control_unit.v:95.44-95.55" */
   wire _13_;
-  /* src = "rtl/module/control_unit.v:78.34-78.40" */
-  wire _14_;
-  wire _15_;
+  wire [3:0] _14_;
+  wire [3:0] _15_;
   wire _16_;
-  wire _17_;
-  /* src = "rtl/module/control_unit.v:12.22-12.28" */
-  output [3:0] addr_A;
-  wire [3:0] addr_A;
-  /* src = "rtl/module/control_unit.v:16.22-16.28" */
-  output [3:0] addr_B;
-  wire [3:0] addr_B;
-  /* src = "rtl/module/control_unit.v:7.16-7.20" */
+  /* src = "rtl/module/control_unit.v:15.12-15.16" */
   output busy;
   wire busy;
-  /* src = "rtl/module/control_unit.v:4.11-4.14" */
+  /* src = "rtl/module/control_unit.v:10.11-10.14" */
   input clk;
   wire clk;
-  /* src = "rtl/module/control_unit.v:11.28-11.32" */
-  output cs_A;
-  wire cs_A;
-  /* src = "rtl/module/control_unit.v:15.28-15.32" */
-  output cs_B;
-  wire cs_B;
-  /* src = "rtl/module/control_unit.v:32.15-32.26" */
-  reg [3:0] cycle_count;
-  /* src = "rtl/module/control_unit.v:8.16-8.20" */
+  /* src = "rtl/module/control_unit.v:19.12-19.15" */
+  output clr;
+  wire clr;
+  /* src = "rtl/module/control_unit.v:39.15-39.18" */
+  reg [3:0] cnt;
+  /* src = "rtl/module/control_unit.v:16.12-16.16" */
   output done;
   wire done;
-  /* src = "rtl/module/control_unit.v:22.16-22.26" */
-  output load_phase;
-  wire load_phase;
-  /* src = "rtl/module/control_unit.v:31.22-31.32" */
-  wire [2:0] next_state;
-  /* src = "rtl/module/control_unit.v:11.22-11.26" */
-  output re_A;
-  wire re_A;
-  /* src = "rtl/module/control_unit.v:15.22-15.26" */
-  output re_B;
-  wire re_B;
-  /* src = "rtl/module/control_unit.v:5.11-5.16" */
+  /* src = "rtl/module/control_unit.v:28.12-28.18" */
+  output out_en;
+  wire out_en;
+  /* src = "rtl/module/control_unit.v:29.18-29.25" */
+  output [3:0] out_idx;
+  wire [3:0] out_idx;
+  /* src = "rtl/module/control_unit.v:24.12-24.17" */
+  output rd_en;
+  wire rd_en;
+  /* src = "rtl/module/control_unit.v:25.18-25.22" */
+  output [2:0] rd_t;
+  wire [2:0] rd_t;
+  /* src = "rtl/module/control_unit.v:11.11-11.16" */
   input rst_n;
   wire rst_n;
-  /* src = "rtl/module/control_unit.v:6.11-6.16" */
+  /* src = "rtl/module/control_unit.v:12.11-12.16" */
   input start;
   wire start;
-  /* src = "rtl/module/control_unit.v:31.15-31.20" */
+  /* src = "rtl/module/control_unit.v:38.15-38.20" */
   reg [2:0] state;
-  /* src = "rtl/module/control_unit.v:19.16-19.25" */
-  output sys_rst_n;
-  wire sys_rst_n;
-  /* src = "rtl/module/control_unit.v:11.16-11.20" */
-  output we_A;
-  wire we_A;
-  /* src = "rtl/module/control_unit.v:15.16-15.20" */
-  output we_B;
-  wire we_B;
-  assign _06_ = cycle_count + /* src = "rtl/module/control_unit.v:44.32-44.50" */ 1'h1;
-  /* src = "rtl/module/control_unit.v:35.5-46.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) cycle_count <= 4'h0;
-    else if (_07_) cycle_count <= _00_;
-  assign _07_ = | { _11_, _12_ };
-  assign cs_A = | { _15_, _16_ };
-  assign _09_ = cycle_count == /* src = "rtl/module/control_unit.v:65.21-65.38" */ 4'ha;
-  assign _08_ = cycle_count == /* src = "rtl/module/control_unit.v:69.21-69.37" */ 4'h3;
-  assign _11_ = _13_ && /* src = "rtl/module/control_unit.v:43.22-43.55" */ busy;
-  assign done = _10_ && /* src = "rtl/module/control_unit.v:78.17-78.40" */ _14_;
-  assign _12_ = state != /* src = "rtl/module/control_unit.v:41.17-41.36" */ next_state;
-  assign _13_ = state != /* src = "rtl/module/control_unit.v:43.22-43.38" */ 3'h3;
-  assign busy = | /* src = "rtl/module/control_unit.v:85.22-85.35" */ state;
-  assign _14_ = ~ /* src = "rtl/module/control_unit.v:78.34-78.40" */ start;
-  /* src = "rtl/module/control_unit.v:35.5-46.8" */
+  /* src = "rtl/module/control_unit.v:13.11-13.19" */
+  input valid_in;
+  wire valid_in;
+  /* src = "rtl/module/control_unit.v:22.12-22.17" */
+  output wr_en;
+  wire wr_en;
+  /* src = "rtl/module/control_unit.v:23.18-23.24" */
+  output [3:0] wr_idx;
+  wire [3:0] wr_idx;
+  assign _02_ = cnt + /* src = "rtl/module/control_unit.v:75.32-75.42" */ 4'h1;
+  /* src = "rtl/module/control_unit.v:41.5-88.8" */
   always @(posedge clk, negedge rst_n)
     if (!rst_n) state <= 3'h0;
-    else state <= next_state;
-  function [3:0] _31_;
+    else if (_08_) state <= _01_;
+  /* src = "rtl/module/control_unit.v:41.5-88.8" */
+  always @(posedge clk, negedge rst_n)
+    if (!rst_n) cnt <= 4'h0;
+    else if (_06_) cnt <= _00_;
+  assign _03_ = { _10_, out_en } != 2'h1;
+  assign _04_ = { _11_, _12_ } != 2'h1;
+  assign _05_ = { _16_, start } != 2'h2;
+  assign _06_ = { clr, valid_in } != 2'h2;
+  assign _07_ = { clr, _10_, valid_in } != 3'h5;
+  assign _08_ = & { _06_, _05_, _04_, _03_, _07_ };
+  assign _09_ = | { out_en, clr };
+  assign _11_ = cnt == /* src = "rtl/module/control_unit.v:63.25-63.37" */ 4'hd;
+  assign _10_ = cnt == /* src = "rtl/module/control_unit.v:71.25-71.37" */ 4'hf;
+  assign done = state == /* src = "rtl/module/control_unit.v:91.22-91.34" */ 3'h4;
+  assign _13_ = cnt <= /* src = "rtl/module/control_unit.v:95.44-95.55" */ 4'h6;
+  assign wr_en = clr && /* src = "rtl/module/control_unit.v:93.21-93.48" */ valid_in;
+  assign rd_en = _12_ && /* src = "rtl/module/control_unit.v:95.21-95.56" */ _13_;
+  assign busy = | /* src = "rtl/module/control_unit.v:90.22-90.35" */ state;
+  function [3:0] _34_;
     input [3:0] a;
     input [7:0] b;
     input [1:0] s;
     /* full_case = 32'd1 */
-    /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:90.9-112.16" */
+    /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:46.13-86.20" */
     (* parallel_case *)
     casez (s)
       2'b?1:
-        _31_ = b[3:0];
+        _34_ = b[3:0];
       2'b1?:
-        _31_ = b[7:4];
+        _34_ = b[7:4];
       default:
-        _31_ = a;
+        _34_ = a;
     endcase
   endfunction
-  assign addr_A = _31_(4'h0, { cycle_count, 1'h1, cycle_count[2:0] }, { _16_, _15_ });
-  assign addr_B = cs_B ? /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:90.9-112.16" */ cycle_count : 4'h0;
-  assign _05_ = _08_ ? /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:69.21-69.37|rtl/module/control_unit.v:69.17-70.39" */ 3'h0 : state;
-  assign _04_ = _09_ ? /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:65.21-65.38|rtl/module/control_unit.v:65.17-66.39" */ 3'h4 : state;
-  assign _03_ = _08_ ? /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:60.21-60.37|rtl/module/control_unit.v:60.17-61.42" */ 3'h3 : state;
-  assign _02_ = _08_ ? /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:56.21-56.37|rtl/module/control_unit.v:56.17-57.41" */ 3'h2 : state;
-  assign _01_ = start ? /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:52.21-52.26|rtl/module/control_unit.v:52.17-53.41" */ 3'h1 : state;
-  function [2:0] _38_;
+  assign _00_ = _34_(4'h0, { _15_, _14_ }, { _12_, _09_ });
+  assign _15_ = _11_ ? /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:63.25-63.37|rtl/module/control_unit.v:63.21-68.24" */ 4'h0 : _02_;
+  assign _14_ = _10_ ? /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:54.29-54.41|rtl/module/control_unit.v:54.25-59.28" */ 4'h0 : _02_;
+  function [2:0] _37_;
     input [2:0] a;
-    input [14:0] b;
-    input [4:0] s;
+    input [11:0] b;
+    input [3:0] s;
     /* full_case = 32'd1 */
-    /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:50.9-72.16" */
+    /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:46.13-86.20" */
     (* parallel_case *)
     casez (s)
-      5'b????1:
-        _38_ = b[2:0];
-      5'b???1?:
-        _38_ = b[5:3];
-      5'b??1??:
-        _38_ = b[8:6];
-      5'b?1???:
-        _38_ = b[11:9];
-      5'b1????:
-        _38_ = b[14:12];
+      4'b???1:
+        _37_ = b[2:0];
+      4'b??1?:
+        _37_ = b[5:3];
+      4'b?1??:
+        _37_ = b[8:6];
+      4'b1???:
+        _37_ = b[11:9];
       default:
-        _38_ = a;
+        _37_ = a;
     endcase
   endfunction
-  assign next_state = _38_(state, { _01_, _02_, _03_, _04_, _05_ }, { _10_, _16_, _15_, _17_, cs_B });
-  assign cs_B = state == /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:50.9-72.16" */ 3'h4;
-  assign _17_ = state == /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:50.9-72.16" */ 3'h3;
-  assign _15_ = state == /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:50.9-72.16" */ 3'h2;
-  assign _16_ = state == /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:50.9-72.16" */ 3'h1;
-  assign _10_ = ! /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:50.9-72.16" */ state;
-  assign _00_ = _12_ ? /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:41.17-41.36|rtl/module/control_unit.v:41.13-44.51" */ 4'h0 : _06_;
-  assign load_phase = cs_A;
-  assign re_A = 1'h0;
-  assign re_B = cs_B;
-  assign sys_rst_n = busy;
-  assign we_A = cs_A;
-  assign we_B = 1'h0;
+  assign _01_ = _37_(3'h0, 12'h29c, { _16_, clr, _12_, out_en });
+  assign out_en = state == /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:46.13-86.20" */ 3'h3;
+  assign _12_ = state == /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:46.13-86.20" */ 3'h2;
+  assign clr = state == /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:46.13-86.20" */ 3'h1;
+  assign _16_ = ! /* full_case = 32'd1 */ /* src = "rtl/module/control_unit.v:0.0-0.0|rtl/module/control_unit.v:46.13-86.20" */ state;
+  assign out_idx = cnt;
+  assign rd_t = cnt[2:0];
+  assign wr_idx = cnt;
 endmodule
 
-/* src = "rtl/module/feeder.v:3.1-22.10" */
-module feeder(a_in, b_in, addr_ctrl, data_to_sram, addr_out);
-  /* src = "rtl/module/feeder.v:5.24-5.28" */
+/* src = "rtl/module/feeder.v:11.1-69.10" */
+module feeder(clk, wr_en, wr_idx, a_in, b_in, rd_en, rd_t, a_row, b_col);
+  /* src = "rtl/module/feeder.v:36.33-36.49" */
+  wire _00_;
+  /* src = "rtl/module/feeder.v:36.33-36.49" */
+  wire _01_;
+  /* src = "rtl/module/feeder.v:36.33-36.49" */
+  wire _02_;
+  /* src = "rtl/module/feeder.v:36.33-36.49" */
+  wire _03_;
+  /* src = "rtl/module/feeder.v:53.33-53.49" */
+  wire _04_;
+  /* src = "rtl/module/feeder.v:53.33-53.49" */
+  wire _05_;
+  /* src = "rtl/module/feeder.v:53.33-53.49" */
+  wire _06_;
+  /* src = "rtl/module/feeder.v:53.33-53.49" */
+  wire _07_;
+  /* src = "rtl/module/feeder.v:31.30-31.44" */
+  wire _08_;
+  /* src = "rtl/module/feeder.v:31.30-31.44" */
+  wire _09_;
+  /* src = "rtl/module/feeder.v:31.30-31.44" */
+  wire _10_;
+  /* src = "rtl/module/feeder.v:36.23-36.50" */
+  wire _11_;
+  /* src = "rtl/module/feeder.v:36.23-36.50" */
+  wire _12_;
+  /* src = "rtl/module/feeder.v:36.23-36.50" */
+  wire _13_;
+  /* src = "rtl/module/feeder.v:36.23-36.50" */
+  wire _14_;
+  /* src = "rtl/module/feeder.v:53.23-53.50" */
+  wire _15_;
+  /* src = "rtl/module/feeder.v:53.23-53.50" */
+  wire _16_;
+  /* src = "rtl/module/feeder.v:53.23-53.50" */
+  wire _17_;
+  /* src = "rtl/module/feeder.v:53.23-53.50" */
+  wire _18_;
+  /* src = "rtl/module/feeder.v:31.48-31.53" */
+  wire _19_;
+  /* src = "rtl/module/feeder.v:31.39-31.44" */
+  wire _20_;
+  /* src = "rtl/module/feeder.v:31.48-31.53" */
+  wire _21_;
+  /* src = "rtl/module/feeder.v:31.39-31.44" */
+  wire _22_;
+  /* src = "rtl/module/feeder.v:31.48-31.53" */
+  wire _23_;
+  /* src = "rtl/module/feeder.v:31.39-31.44" */
+  wire _24_;
+  /* src = "rtl/module/feeder.v:31.48-31.53" */
+  wire _25_;
+  /* src = "rtl/module/feeder.v:30.28-30.44" */
+  /* unused_bits = "4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31" */
+  wire [31:0] _26_;
+  /* src = "rtl/module/feeder.v:30.28-30.44" */
+  /* unused_bits = "4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31" */
+  wire [31:0] _27_;
+  /* src = "rtl/module/feeder.v:30.28-30.44" */
+  /* unused_bits = "4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31" */
+  wire [31:0] _28_;
+  /* src = "rtl/module/feeder.v:17.24-17.28" */
   input [7:0] a_in;
   wire [7:0] a_in;
-  /* src = "rtl/module/feeder.v:9.17-9.26" */
-  input [3:0] addr_ctrl;
-  wire [3:0] addr_ctrl;
-  /* src = "rtl/module/feeder.v:13.18-13.26" */
-  output [3:0] addr_out;
-  wire [3:0] addr_out;
-  /* src = "rtl/module/feeder.v:6.24-6.28" */
+  /* src = "rtl/module/feeder.v:23.19-23.24" */
+  output [31:0] a_row;
+  wire [31:0] a_row;
+  /* src = "rtl/module/feeder.v:24.19-24.24" */
+  output [31:0] b_col;
+  wire [31:0] b_col;
+  /* src = "rtl/module/feeder.v:18.24-18.28" */
   input [7:0] b_in;
   wire [7:0] b_in;
-  /* src = "rtl/module/feeder.v:12.25-12.37" */
-  output [7:0] data_to_sram;
-  wire [7:0] data_to_sram;
-  assign data_to_sram = addr_ctrl[3] ? /* src = "rtl/module/feeder.v:19.27-19.63" */ b_in : a_in;
-  assign addr_out = addr_ctrl;
-endmodule
-
-/* src = "rtl/module/systolic_array.v:10.1-77.10" */
-module systolic_array(a, b, rst_n, clk, y);
-  /* src = "rtl/module/systolic_array.v:58.5-72.8" */
-  wire [15:0] _00_;
-  /* src = "rtl/module/systolic_array.v:68.51-68.74" */
-  wire [15:0] _01_;
-  /* src = "rtl/module/systolic_array.v:11.24-11.25" */
-  input [7:0] a;
-  wire [7:0] a;
-  /* src = "rtl/module/systolic_array.v:17.22-17.29" */
-  reg [7:0] \a_stage[0] ;
-  /* src = "rtl/module/systolic_array.v:17.22-17.29" */
-  reg [7:0] \a_stage[1] ;
-  /* src = "rtl/module/systolic_array.v:17.22-17.29" */
-  reg [7:0] \a_stage[2] ;
-  /* src = "rtl/module/systolic_array.v:17.22-17.29" */
-  reg [7:0] \a_stage[3] ;
-  /* src = "rtl/module/systolic_array.v:11.27-11.28" */
-  input [7:0] b;
-  wire [7:0] b;
-  /* src = "rtl/module/systolic_array.v:20.22-20.29" */
-  reg [7:0] \b_stage[0] ;
-  /* src = "rtl/module/systolic_array.v:20.22-20.29" */
-  reg [7:0] \b_stage[1] ;
-  /* src = "rtl/module/systolic_array.v:20.22-20.29" */
-  reg [7:0] \b_stage[2] ;
-  /* src = "rtl/module/systolic_array.v:20.22-20.29" */
-  reg [7:0] \b_stage[3] ;
-  /* src = "rtl/module/systolic_array.v:12.18-12.21" */
+  /* src = "rtl/module/feeder.v:31.18-31.27" */
+  wire \bank[0].in_window ;
+  /* src = "rtl/module/feeder.v:30.24-30.25" */
+  wire [3:0] \bank[0].k ;
+  /* src = "rtl/module/feeder.v:31.18-31.27" */
+  wire \bank[1].in_window ;
+  /* src = "rtl/module/feeder.v:30.24-30.25" */
+  wire [3:0] \bank[1].k ;
+  /* src = "rtl/module/feeder.v:31.18-31.27" */
+  wire \bank[2].in_window ;
+  /* src = "rtl/module/feeder.v:30.24-30.25" */
+  wire [3:0] \bank[2].k ;
+  /* src = "rtl/module/feeder.v:31.18-31.27" */
+  wire \bank[3].in_window ;
+  /* src = "rtl/module/feeder.v:30.24-30.25" */
+  wire [3:0] \bank[3].k ;
+  /* src = "rtl/module/feeder.v:12.11-12.14" */
   input clk;
   wire clk;
-  /* src = "rtl/module/systolic_array.v:25.13-25.14" */
-  wire [31:0] i;
-  /* src = "rtl/module/systolic_array.v:25.16-25.17" */
-  wire [31:0] j;
-  /* src = "rtl/module/systolic_array.v:23.23-23.28" */
-  reg [15:0] \p_reg[15] ;
+  /* src = "rtl/module/feeder.v:21.11-21.16" */
+  input rd_en;
+  wire rd_en;
+  /* src = "rtl/module/feeder.v:22.17-22.21" */
+  input [2:0] rd_t;
+  wire [2:0] rd_t;
+  /* src = "rtl/module/feeder.v:15.11-15.16" */
+  input wr_en;
+  wire wr_en;
+  /* src = "rtl/module/feeder.v:16.17-16.23" */
+  input [3:0] wr_idx;
+  wire [3:0] wr_idx;
+  assign _00_ = ! /* src = "rtl/module/feeder.v:36.33-36.49" */ wr_idx[3:2];
+  assign _01_ = wr_idx[3:2] == /* src = "rtl/module/feeder.v:36.33-36.49" */ 2'h1;
+  assign _02_ = wr_idx[3:2] == /* src = "rtl/module/feeder.v:36.33-36.49" */ 2'h2;
+  assign _03_ = wr_idx[3:2] == /* src = "rtl/module/feeder.v:36.33-36.49" */ 2'h3;
+  assign _04_ = ! /* src = "rtl/module/feeder.v:53.33-53.49" */ wr_idx[1:0];
+  assign _05_ = wr_idx[1:0] == /* src = "rtl/module/feeder.v:53.33-53.49" */ 2'h1;
+  assign _06_ = wr_idx[1:0] == /* src = "rtl/module/feeder.v:53.33-53.49" */ 2'h2;
+  assign _07_ = wr_idx[1:0] == /* src = "rtl/module/feeder.v:53.33-53.49" */ 2'h3;
+  assign \bank[0].in_window  = rd_en && /* src = "rtl/module/feeder.v:31.30-31.53" */ _19_;
+  assign _08_ = rd_en && /* src = "rtl/module/feeder.v:31.30-31.44" */ _20_;
+  assign \bank[1].in_window  = _08_ && /* src = "rtl/module/feeder.v:31.30-31.53" */ _21_;
+  assign _09_ = rd_en && /* src = "rtl/module/feeder.v:31.30-31.44" */ _22_;
+  assign \bank[2].in_window  = _09_ && /* src = "rtl/module/feeder.v:31.30-31.53" */ _23_;
+  assign _10_ = rd_en && /* src = "rtl/module/feeder.v:31.30-31.44" */ _24_;
+  assign \bank[3].in_window  = _10_ && /* src = "rtl/module/feeder.v:31.30-31.53" */ _25_;
+  assign _11_ = wr_en && /* src = "rtl/module/feeder.v:36.23-36.50" */ _00_;
+  assign _12_ = wr_en && /* src = "rtl/module/feeder.v:36.23-36.50" */ _01_;
+  assign _13_ = wr_en && /* src = "rtl/module/feeder.v:36.23-36.50" */ _02_;
+  assign _14_ = wr_en && /* src = "rtl/module/feeder.v:36.23-36.50" */ _03_;
+  assign _15_ = wr_en && /* src = "rtl/module/feeder.v:53.23-53.50" */ _04_;
+  assign _16_ = wr_en && /* src = "rtl/module/feeder.v:53.23-53.50" */ _05_;
+  assign _17_ = wr_en && /* src = "rtl/module/feeder.v:53.23-53.50" */ _06_;
+  assign _18_ = wr_en && /* src = "rtl/module/feeder.v:53.23-53.50" */ _07_;
+  assign _19_ = ! /* src = "rtl/module/feeder.v:31.48-31.53" */ rd_t[2];
+  assign _20_ = ! /* src = "rtl/module/feeder.v:31.39-31.44" */ \bank[1].k [3];
+  assign _21_ = ! /* src = "rtl/module/feeder.v:31.48-31.53" */ \bank[1].k [2];
+  assign _22_ = ! /* src = "rtl/module/feeder.v:31.39-31.44" */ \bank[2].k [3];
+  assign _23_ = ! /* src = "rtl/module/feeder.v:31.48-31.53" */ \bank[2].k [2];
+  assign _24_ = ! /* src = "rtl/module/feeder.v:31.39-31.44" */ \bank[3].k [3];
+  assign _25_ = ! /* src = "rtl/module/feeder.v:31.48-31.53" */ \bank[3].k [2];
+  assign { _26_[31:4], \bank[1].k  } = { 29'h00000000, rd_t } - /* src = "rtl/module/feeder.v:30.28-30.44" */ 32'd1;
+  assign { _27_[31:4], \bank[2].k [3:1] } = { 29'h00000000, rd_t[2:1] } - /* src = "rtl/module/feeder.v:30.28-30.44" */ 31'h00000001;
+  assign { _28_[31:4], \bank[3].k  } = { 29'h00000000, rd_t } - /* src = "rtl/module/feeder.v:30.28-30.44" */ 32'd3;
+  /* src = "rtl/module/feeder.v:33.45-48.14" */
+  \$paramod$7182423712c14b2ce6560f502be0da4c9d8e2081\sram_dp  \bank[0].mem_a  (
+    .add_A(wr_idx[1:0]),
+    .add_B(rd_t[1:0]),
+    .clk_A(clk),
+    .clk_B(clk),
+    .cs_A(1'h1),
+    .cs_B(1'h1),
+    .data_inA(a_in),
+    .data_inB(8'h00),
+    .data_outB(a_row[7:0]),
+    .re_A(1'h0),
+    .re_B(\bank[0].in_window ),
+    .we_A(_11_),
+    .we_B(1'h0)
+  );
+  /* src = "rtl/module/feeder.v:50.45-65.14" */
+  \$paramod$7182423712c14b2ce6560f502be0da4c9d8e2081\sram_dp  \bank[0].mem_b  (
+    .add_A(wr_idx[3:2]),
+    .add_B(rd_t[1:0]),
+    .clk_A(clk),
+    .clk_B(clk),
+    .cs_A(1'h1),
+    .cs_B(1'h1),
+    .data_inA(b_in),
+    .data_inB(8'h00),
+    .data_outB(b_col[7:0]),
+    .re_A(1'h0),
+    .re_B(\bank[0].in_window ),
+    .we_A(_15_),
+    .we_B(1'h0)
+  );
+  /* src = "rtl/module/feeder.v:33.45-48.14" */
+  \$paramod$7182423712c14b2ce6560f502be0da4c9d8e2081\sram_dp  \bank[1].mem_a  (
+    .add_A(wr_idx[1:0]),
+    .add_B(\bank[1].k [1:0]),
+    .clk_A(clk),
+    .clk_B(clk),
+    .cs_A(1'h1),
+    .cs_B(1'h1),
+    .data_inA(a_in),
+    .data_inB(8'h00),
+    .data_outB(a_row[15:8]),
+    .re_A(1'h0),
+    .re_B(\bank[1].in_window ),
+    .we_A(_12_),
+    .we_B(1'h0)
+  );
+  /* src = "rtl/module/feeder.v:50.45-65.14" */
+  \$paramod$7182423712c14b2ce6560f502be0da4c9d8e2081\sram_dp  \bank[1].mem_b  (
+    .add_A(wr_idx[3:2]),
+    .add_B(\bank[1].k [1:0]),
+    .clk_A(clk),
+    .clk_B(clk),
+    .cs_A(1'h1),
+    .cs_B(1'h1),
+    .data_inA(b_in),
+    .data_inB(8'h00),
+    .data_outB(b_col[15:8]),
+    .re_A(1'h0),
+    .re_B(\bank[1].in_window ),
+    .we_A(_16_),
+    .we_B(1'h0)
+  );
+  /* src = "rtl/module/feeder.v:33.45-48.14" */
+  \$paramod$7182423712c14b2ce6560f502be0da4c9d8e2081\sram_dp  \bank[2].mem_a  (
+    .add_A(wr_idx[1:0]),
+    .add_B({ \bank[2].k [1], rd_t[0] }),
+    .clk_A(clk),
+    .clk_B(clk),
+    .cs_A(1'h1),
+    .cs_B(1'h1),
+    .data_inA(a_in),
+    .data_inB(8'h00),
+    .data_outB(a_row[23:16]),
+    .re_A(1'h0),
+    .re_B(\bank[2].in_window ),
+    .we_A(_13_),
+    .we_B(1'h0)
+  );
+  /* src = "rtl/module/feeder.v:50.45-65.14" */
+  \$paramod$7182423712c14b2ce6560f502be0da4c9d8e2081\sram_dp  \bank[2].mem_b  (
+    .add_A(wr_idx[3:2]),
+    .add_B({ \bank[2].k [1], rd_t[0] }),
+    .clk_A(clk),
+    .clk_B(clk),
+    .cs_A(1'h1),
+    .cs_B(1'h1),
+    .data_inA(b_in),
+    .data_inB(8'h00),
+    .data_outB(b_col[23:16]),
+    .re_A(1'h0),
+    .re_B(\bank[2].in_window ),
+    .we_A(_17_),
+    .we_B(1'h0)
+  );
+  /* src = "rtl/module/feeder.v:33.45-48.14" */
+  \$paramod$7182423712c14b2ce6560f502be0da4c9d8e2081\sram_dp  \bank[3].mem_a  (
+    .add_A(wr_idx[1:0]),
+    .add_B(\bank[3].k [1:0]),
+    .clk_A(clk),
+    .clk_B(clk),
+    .cs_A(1'h1),
+    .cs_B(1'h1),
+    .data_inA(a_in),
+    .data_inB(8'h00),
+    .data_outB(a_row[31:24]),
+    .re_A(1'h0),
+    .re_B(\bank[3].in_window ),
+    .we_A(_14_),
+    .we_B(1'h0)
+  );
+  /* src = "rtl/module/feeder.v:50.45-65.14" */
+  \$paramod$7182423712c14b2ce6560f502be0da4c9d8e2081\sram_dp  \bank[3].mem_b  (
+    .add_A(wr_idx[3:2]),
+    .add_B(\bank[3].k [1:0]),
+    .clk_A(clk),
+    .clk_B(clk),
+    .cs_A(1'h1),
+    .cs_B(1'h1),
+    .data_inA(b_in),
+    .data_inB(8'h00),
+    .data_outB(b_col[31:24]),
+    .re_A(1'h0),
+    .re_B(\bank[3].in_window ),
+    .we_A(_18_),
+    .we_B(1'h0)
+  );
+  assign _26_[3:0] = \bank[1].k ;
+  assign _27_[3:0] = { \bank[2].k [3:1], rd_t[0] };
+  assign _28_[3:0] = \bank[3].k ;
+  assign \bank[0].k  = { 1'h0, rd_t };
+  assign \bank[2].k [0] = rd_t[0];
+endmodule
+
+/* src = "rtl/module/mac.v:5.1-39.10" */
+module mac(clk, rst_n, clr, a, b, a_out, b_out, acc);
+  /* src = "rtl/module/mac.v:23.5-37.8" */
+  wire [7:0] _00_;
+  /* src = "rtl/module/mac.v:23.5-37.8" */
+  wire [15:0] _01_;
+  /* src = "rtl/module/mac.v:23.5-37.8" */
+  wire [7:0] _02_;
+  /* src = "rtl/module/mac.v:20.35-20.53" */
+  wire _03_;
+  /* src = "rtl/module/mac.v:21.35-21.66" */
+  wire [15:0] _04_;
+  /* src = "rtl/module/mac.v:9.24-9.25" */
+  input [7:0] a;
+  wire [7:0] a;
+  /* src = "rtl/module/mac.v:11.29-11.34" */
+  output [7:0] a_out;
+  reg [7:0] a_out;
+  /* src = "rtl/module/mac.v:13.30-13.33" */
+  output [15:0] acc;
+  reg [15:0] acc;
+  /* src = "rtl/module/mac.v:10.24-10.25" */
+  input [7:0] b;
+  wire [7:0] b;
+  /* src = "rtl/module/mac.v:12.29-12.34" */
+  output [7:0] b_out;
+  reg [7:0] b_out;
+  /* src = "rtl/module/mac.v:6.11-6.14" */
+  input clk;
+  wire clk;
+  /* src = "rtl/module/mac.v:8.11-8.14" */
+  input clr;
+  wire clr;
+  /* src = "rtl/module/mac.v:16.24-16.31" */
+  wire [15:0] product;
+  /* src = "rtl/module/mac.v:7.11-7.16" */
+  input rst_n;
+  wire rst_n;
+  /* src = "rtl/module/mac.v:17.24-17.27" */
+  wire [16:0] sum;
+  /* src = "rtl/module/mac.v:20.24-20.31" */
+  wire [15:0] sum_sat;
+  assign sum = $signed(acc) + /* src = "rtl/module/mac.v:17.30-17.43" */ $signed(product);
+  assign _03_ = sum[16] == /* src = "rtl/module/mac.v:20.35-20.53" */ sum[15];
+  assign product = $signed(a) * /* src = "rtl/module/mac.v:16.34-16.39" */ $signed(b);
+  /* src = "rtl/module/mac.v:23.5-37.8" */
+  always @(posedge clk, negedge rst_n)
+    if (!rst_n) a_out <= 8'h00;
+    else a_out <= _00_;
+  /* src = "rtl/module/mac.v:23.5-37.8" */
+  always @(posedge clk, negedge rst_n)
+    if (!rst_n) b_out <= 8'h00;
+    else b_out <= _02_;
+  /* src = "rtl/module/mac.v:23.5-37.8" */
+  always @(posedge clk, negedge rst_n)
+    if (!rst_n) acc <= 16'h0000;
+    else acc <= _01_;
+  assign _01_ = clr ? /* full_case = 32'd1 */ /* src = "rtl/module/mac.v:28.22-28.25|rtl/module/mac.v:28.18-36.12" */ 16'h0000 : sum_sat;
+  assign _02_ = clr ? /* full_case = 32'd1 */ /* src = "rtl/module/mac.v:28.22-28.25|rtl/module/mac.v:28.18-36.12" */ 8'h00 : b;
+  assign _00_ = clr ? /* full_case = 32'd1 */ /* src = "rtl/module/mac.v:28.22-28.25|rtl/module/mac.v:28.18-36.12" */ 8'h00 : a;
+  assign sum_sat = _03_ ? /* src = "rtl/module/mac.v:20.34-21.67" */ sum[15:0] : { _04_[15:14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14] };
+  assign _04_[15:14] = sum[16] ? /* src = "rtl/module/mac.v:21.35-21.66" */ 2'h2 : 2'h1;
+  assign _04_[13:0] = { _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14], _04_[14] };
+endmodule
+
+/* src = "rtl/module/systolic_array.v:10.1-46.10" */
+module systolic_array(clk, rst_n, clr, a_row, b_col, c_flat);
+  /* src = "rtl/module/systolic_array.v:21.18-21.21" */
+  /* unused_bits = "32 33 34 35 36 37 38 39 72 73 74 75 76 77 78 79 112 113 114 115 116 117 118 119 152 153 154 155 156 157 158 159" */
+  wire [159:0] a_h;
+  /* src = "rtl/module/systolic_array.v:14.18-14.23" */
+  input [31:0] a_row;
+  wire [31:0] a_row;
+  /* src = "rtl/module/systolic_array.v:15.18-15.23" */
+  input [31:0] b_col;
+  wire [31:0] b_col;
+  /* src = "rtl/module/systolic_array.v:22.18-22.21" */
+  /* unused_bits = "128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159" */
+  wire [159:0] b_v;
+  /* src = "rtl/module/systolic_array.v:16.20-16.26" */
+  output [255:0] c_flat;
+  wire [255:0] c_flat;
+  /* src = "rtl/module/systolic_array.v:11.11-11.14" */
+  input clk;
+  wire clk;
+  /* src = "rtl/module/systolic_array.v:13.11-13.14" */
+  input clr;
+  wire clr;
   /* src = "rtl/module/systolic_array.v:12.11-12.16" */
   input rst_n;
   wire rst_n;
-  /* src = "rtl/module/systolic_array.v:13.26-13.27" */
-  output [15:0] y;
-  wire [15:0] y;
-  assign _00_ = $signed(\p_reg[15] ) + /* src = "rtl/module/systolic_array.v:68.36-68.75" */ $signed(_01_);
-  assign _01_ = $signed(\a_stage[3] ) * /* src = "rtl/module/systolic_array.v:68.51-68.74" */ $signed(\b_stage[3] );
-  /* src = "rtl/module/systolic_array.v:58.5-72.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) \p_reg[15]  <= 16'h0000;
-    else \p_reg[15]  <= _00_;
-  /* src = "rtl/module/systolic_array.v:43.5-55.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) \b_stage[0]  <= 8'h00;
-    else \b_stage[0]  <= b;
-  /* src = "rtl/module/systolic_array.v:43.5-55.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) \b_stage[1]  <= 8'h00;
-    else \b_stage[1]  <= \b_stage[0] ;
-  /* src = "rtl/module/systolic_array.v:43.5-55.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) \b_stage[2]  <= 8'h00;
-    else \b_stage[2]  <= \b_stage[1] ;
-  /* src = "rtl/module/systolic_array.v:43.5-55.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) \b_stage[3]  <= 8'h00;
-    else \b_stage[3]  <= \b_stage[2] ;
-  /* src = "rtl/module/systolic_array.v:28.5-40.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) \a_stage[0]  <= 8'h00;
-    else \a_stage[0]  <= a;
-  /* src = "rtl/module/systolic_array.v:28.5-40.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) \a_stage[1]  <= 8'h00;
-    else \a_stage[1]  <= \a_stage[0] ;
-  /* src = "rtl/module/systolic_array.v:28.5-40.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) \a_stage[2]  <= 8'h00;
-    else \a_stage[2]  <= \a_stage[1] ;
-  /* src = "rtl/module/systolic_array.v:28.5-40.8" */
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n) \a_stage[3]  <= 8'h00;
-    else \a_stage[3]  <= \a_stage[2] ;
-  assign i = 32'd4;
-  assign j = 32'd4;
-  assign y = \p_reg[15] ;
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[0].col[0].pe  (
+    .a(a_row[7:0]),
+    .a_out(a_h[15:8]),
+    .acc(c_flat[15:0]),
+    .b(b_col[7:0]),
+    .b_out(b_v[39:32]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[0].col[1].pe  (
+    .a(a_h[15:8]),
+    .a_out(a_h[23:16]),
+    .acc(c_flat[31:16]),
+    .b(b_col[15:8]),
+    .b_out(b_v[47:40]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[0].col[2].pe  (
+    .a(a_h[23:16]),
+    .a_out(a_h[31:24]),
+    .acc(c_flat[47:32]),
+    .b(b_col[23:16]),
+    .b_out(b_v[55:48]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[0].col[3].pe  (
+    .a(a_h[31:24]),
+    .a_out(a_h[39:32]),
+    .acc(c_flat[63:48]),
+    .b(b_col[31:24]),
+    .b_out(b_v[63:56]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[1].col[0].pe  (
+    .a(a_row[15:8]),
+    .a_out(a_h[55:48]),
+    .acc(c_flat[79:64]),
+    .b(b_v[39:32]),
+    .b_out(b_v[71:64]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[1].col[1].pe  (
+    .a(a_h[55:48]),
+    .a_out(a_h[63:56]),
+    .acc(c_flat[95:80]),
+    .b(b_v[47:40]),
+    .b_out(b_v[79:72]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[1].col[2].pe  (
+    .a(a_h[63:56]),
+    .a_out(a_h[71:64]),
+    .acc(c_flat[111:96]),
+    .b(b_v[55:48]),
+    .b_out(b_v[87:80]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[1].col[3].pe  (
+    .a(a_h[71:64]),
+    .a_out(a_h[79:72]),
+    .acc(c_flat[127:112]),
+    .b(b_v[63:56]),
+    .b_out(b_v[95:88]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[2].col[0].pe  (
+    .a(a_row[23:16]),
+    .a_out(a_h[95:88]),
+    .acc(c_flat[143:128]),
+    .b(b_v[71:64]),
+    .b_out(b_v[103:96]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[2].col[1].pe  (
+    .a(a_h[95:88]),
+    .a_out(a_h[103:96]),
+    .acc(c_flat[159:144]),
+    .b(b_v[79:72]),
+    .b_out(b_v[111:104]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[2].col[2].pe  (
+    .a(a_h[103:96]),
+    .a_out(a_h[111:104]),
+    .acc(c_flat[175:160]),
+    .b(b_v[87:80]),
+    .b_out(b_v[119:112]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[2].col[3].pe  (
+    .a(a_h[111:104]),
+    .a_out(a_h[119:112]),
+    .acc(c_flat[191:176]),
+    .b(b_v[95:88]),
+    .b_out(b_v[127:120]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[3].col[0].pe  (
+    .a(a_row[31:24]),
+    .a_out(a_h[135:128]),
+    .acc(c_flat[207:192]),
+    .b(b_v[103:96]),
+    .b_out(b_v[135:128]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[3].col[1].pe  (
+    .a(a_h[135:128]),
+    .a_out(a_h[143:136]),
+    .acc(c_flat[223:208]),
+    .b(b_v[111:104]),
+    .b_out(b_v[143:136]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[3].col[2].pe  (
+    .a(a_h[143:136]),
+    .a_out(a_h[151:144]),
+    .acc(c_flat[239:224]),
+    .b(b_v[119:112]),
+    .b_out(b_v[151:144]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  /* module_not_derived = 32'd1 */
+  /* src = "rtl/module/systolic_array.v:32.21-41.18" */
+  mac \row[3].col[3].pe  (
+    .a(a_h[151:144]),
+    .a_out(a_h[159:152]),
+    .acc(c_flat[255:240]),
+    .b(b_v[127:120]),
+    .b_out(b_v[159:152]),
+    .clk(clk),
+    .clr(clr),
+    .rst_n(rst_n)
+  );
+  assign { a_h[127:120], a_h[87:80], a_h[47:40], a_h[7:0] } = a_row;
+  assign b_v[31:0] = b_col;
 endmodule
 
 /* top =  1  */
-/* src = "rtl/topmodule/tpu_core.v:4.1-123.10" */
+/* src = "rtl/topmodule/tpu_core.v:13.1-89.10" */
 module tpu_core(clk, rst_n, a_in, b_in, valid_in, c_out, c_valid, start, busy, done, relu_mode, transpose_mode);
-  /* src = "rtl/topmodule/tpu_core.v:9.24-9.28" */
+  /* src = "rtl/topmodule/tpu_core.v:18.24-18.28" */
   input [7:0] a_in;
   wire [7:0] a_in;
-  /* src = "rtl/topmodule/tpu_core.v:33.16-33.22" */
-  wire [3:0] addr_A;
-  /* src = "rtl/topmodule/tpu_core.v:37.16-37.22" */
-  wire [3:0] addr_B;
-  /* src = "rtl/topmodule/tpu_core.v:10.24-10.28" */
+  /* src = "rtl/topmodule/tpu_core.v:37.17-37.22" */
+  wire [31:0] a_row;
+  /* src = "rtl/topmodule/tpu_core.v:37.24-37.29" */
+  wire [31:0] b_col;
+  /* src = "rtl/topmodule/tpu_core.v:19.24-19.28" */
   input [7:0] b_in;
   wire [7:0] b_in;
-  /* src = "rtl/topmodule/tpu_core.v:19.12-19.16" */
+  /* src = "rtl/topmodule/tpu_core.v:28.12-28.16" */
   output busy;
   wire busy;
-  /* src = "rtl/topmodule/tpu_core.v:14.26-14.31" */
+  /* src = "rtl/topmodule/tpu_core.v:38.18-38.24" */
+  wire [255:0] c_flat;
+  /* src = "rtl/topmodule/tpu_core.v:23.26-23.31" */
   output [15:0] c_out;
   wire [15:0] c_out;
-  /* src = "rtl/topmodule/tpu_core.v:15.12-15.19" */
+  /* src = "rtl/topmodule/tpu_core.v:24.12-24.19" */
   output c_valid;
   wire c_valid;
-  /* src = "rtl/topmodule/tpu_core.v:5.11-5.14" */
+  /* src = "rtl/topmodule/tpu_core.v:14.11-14.14" */
   input clk;
   wire clk;
-  /* src = "rtl/topmodule/tpu_core.v:32.22-32.26" */
-  wire cs_A;
-  /* src = "rtl/topmodule/tpu_core.v:36.22-36.26" */
-  wire cs_B;
-  /* src = "rtl/topmodule/tpu_core.v:20.12-20.16" */
+  /* src = "rtl/topmodule/tpu_core.v:34.10-34.13" */
+  wire clr;
+  /* src = "rtl/topmodule/tpu_core.v:29.12-29.16" */
   output done;
   wire done;
-  /* src = "rtl/topmodule/tpu_core.v:27.16-27.27" */
-  wire [3:0] feeder_addr;
-  /* src = "rtl/topmodule/tpu_core.v:26.23-26.34" */
-  wire [7:0] feeder_data;
-  /* src = "rtl/topmodule/tpu_core.v:40.10-40.20" */
-  /* unused_bits = "0" */
-  wire load_phase;
-  /* src = "rtl/topmodule/tpu_core.v:32.16-32.20" */
-  wire re_A;
+  /* src = "rtl/topmodule/tpu_core.v:34.29-34.35" */
+  wire out_en;
+  /* src = "rtl/topmodule/tpu_core.v:35.24-35.31" */
+  wire [3:0] out_idx;
+  /* src = "rtl/topmodule/tpu_core.v:34.22-34.27" */
+  wire rd_en;
   /* src = "rtl/topmodule/tpu_core.v:36.16-36.20" */
-  wire re_B;
-  /* src = "rtl/topmodule/tpu_core.v:21.11-21.20" */
+  wire [2:0] rd_t;
+  /* src = "rtl/topmodule/tpu_core.v:30.11-30.20" */
   input relu_mode;
   wire relu_mode;
-  /* src = "rtl/topmodule/tpu_core.v:6.11-6.16" */
+  /* src = "rtl/topmodule/tpu_core.v:15.11-15.16" */
   input rst_n;
   wire rst_n;
-  /* src = "rtl/topmodule/tpu_core.v:34.24-34.34" */
-  /* unused_bits = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15" */
-  wire [15:0] sram_a_out;
-  /* src = "rtl/topmodule/tpu_core.v:38.24-38.34" */
-  wire [15:0] sram_b_out;
-  /* src = "rtl/topmodule/tpu_core.v:18.11-18.16" */
+  /* src = "rtl/topmodule/tpu_core.v:27.11-27.16" */
   input start;
   wire start;
-  /* src = "rtl/topmodule/tpu_core.v:28.23-28.36" */
-  wire [7:0] systolic_a_in;
-  /* src = "rtl/topmodule/tpu_core.v:28.38-28.51" */
-  wire [7:0] systolic_b_in;
-  /* src = "rtl/topmodule/tpu_core.v:30.24-30.36" */
-  wire [15:0] systolic_out;
-  /* src = "rtl/topmodule/tpu_core.v:29.10-29.24" */
-  wire systolic_rst_n;
-  /* src = "rtl/topmodule/tpu_core.v:22.11-22.25" */
+  /* src = "rtl/topmodule/tpu_core.v:31.11-31.25" */
   input transpose_mode;
   wire transpose_mode;
-  /* src = "rtl/topmodule/tpu_core.v:11.11-11.19" */
+  /* src = "rtl/topmodule/tpu_core.v:20.11-20.19" */
   input valid_in;
   wire valid_in;
-  /* src = "rtl/topmodule/tpu_core.v:32.10-32.14" */
-  wire we_A;
-  /* src = "rtl/topmodule/tpu_core.v:36.10-36.14" */
-  wire we_B;
+  /* src = "rtl/topmodule/tpu_core.v:34.15-34.20" */
+  wire wr_en;
+  /* src = "rtl/topmodule/tpu_core.v:35.16-35.22" */
+  wire [3:0] wr_idx;
   /* module_not_derived = 32'd1 */
-  /* src = "rtl/topmodule/tpu_core.v:43.18-59.6" */
+  /* src = "rtl/topmodule/tpu_core.v:40.18-54.6" */
   control_unit ctrl (
-    .addr_A(addr_A),
-    .addr_B(addr_B),
     .busy(busy),
     .clk(clk),
-    .cs_A(cs_A),
-    .cs_B(cs_B),
+    .clr(clr),
     .done(done),
-    .load_phase(load_phase),
-    .re_A(re_A),
-    .re_B(re_B),
+    .out_en(out_en),
+    .out_idx(out_idx),
+    .rd_en(rd_en),
+    .rd_t(rd_t),
     .rst_n(rst_n),
     .start(start),
-    .sys_rst_n(systolic_rst_n),
-    .we_A(we_A),
-    .we_B(we_B)
+    .valid_in(valid_in),
+    .wr_en(wr_en),
+    .wr_idx(wr_idx)
   );
   /* module_not_derived = 32'd1 */
-  /* src = "rtl/topmodule/tpu_core.v:62.12-68.6" */
+  /* src = "rtl/topmodule/tpu_core.v:56.12-66.6" */
   feeder input_feeder (
     .a_in(a_in),
-    .addr_ctrl(addr_A),
-    .addr_out(feeder_addr),
+    .a_row(a_row),
+    .b_col(b_col),
     .b_in(b_in),
-    .data_to_sram(feeder_data)
-  );
-  /* src = "rtl/topmodule/tpu_core.v:77.7-95.6" */
-  \$paramod$60abf439344aa70af45b207dff28b12c895f5a44\sram_dp  memory (
-    .add_A(feeder_addr),
-    .add_B(addr_B),
-    .clk_A(clk),
-    .clk_B(clk),
-    .cs_A(cs_A),
-    .cs_B(cs_B),
-    .data_inA({ feeder_data[7], feeder_data[7], feeder_data[7], feeder_data[7], feeder_data[7], feeder_data[7], feeder_data[7], feeder_data[7], feeder_data }),
-    .data_inB(systolic_out),
-    .data_outA(sram_a_out),
-    .data_outB(sram_b_out),
-    .re_A(re_A),
-    .re_B(re_B),
-    .we_A(we_A),
-    .we_B(we_B)
+    .clk(clk),
+    .rd_en(rd_en),
+    .rd_t(rd_t),
+    .wr_en(wr_en),
+    .wr_idx(wr_idx)
   );
   /* module_not_derived = 32'd1 */
-  /* src = "rtl/topmodule/tpu_core.v:113.15-121.6" */
+  /* src = "rtl/topmodule/tpu_core.v:77.15-87.6" */
   collector output_collector (
+    .c_flat(c_flat),
     .clk(clk),
-    .data_from_sram(sram_b_out),
+    .en(out_en),
     .relu_mode(relu_mode),
     .result_out(c_out),
     .result_valid(c_valid),
     .rst_n(rst_n),
-    .sram_valid(re_B)
+    .sel(out_idx),
+    .transpose_mode(transpose_mode)
   );
   /* module_not_derived = 32'd1 */
-  /* src = "rtl/topmodule/tpu_core.v:104.20-110.6" */
+  /* src = "rtl/topmodule/tpu_core.v:68.20-75.6" */
   systolic_array systolic (
-    .a(a_in),
-    .b(b_in),
+    .a_row(a_row),
+    .b_col(b_col),
+    .c_flat(c_flat),
     .clk(clk),
-    .rst_n(systolic_rst_n),
-    .y(systolic_out)
+    .clr(clr),
+    .rst_n(rst_n)
   );
-  assign systolic_a_in = a_in;
-  assign systolic_b_in = b_in;
 endmodule

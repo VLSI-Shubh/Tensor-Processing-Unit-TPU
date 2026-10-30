@@ -16,6 +16,7 @@ RTL_MODULES="rtl/module/mac.v \
 
 RTL_TOP="rtl/topmodule/tpu_core.v"
 
+TB_MAC="verif/functionalVerification/modules/tb_mac.v"
 TB_SYSTOLIC="verif/functionalVerification/modules/tb_systolic_array.v"
 TB_SRAM="verif/functionalVerification/modules/tb_sram_dp.v"
 TB_CONTROL="verif/functionalVerification/modules/tb_control_unit.v"
@@ -23,6 +24,7 @@ TB_TPU="verif/functionalVerification/topmodule/tb_tpu_core.v"
 
 # Output directories
 mkdir -p simulation_output
+rm -f simulation_output/sim.log
 mkdir -p synth
 
 # ===================================================
@@ -30,13 +32,22 @@ mkdir -p synth
 # ===================================================
 
 echo "=================================================="
+echo "[0] Simulating MAC unit..."
+echo "=================================================="
+iverilog -g2005 -o simulation_output/tb_mac.out   rtl/module/mac.v   "$TB_MAC"
+vvp simulation_output/tb_mac.out | tee -a simulation_output/sim.log
+mv tb_mac.vcd verif/functionalVerification/modules/ 2>/dev/null
+echo "VCD generated: verif/functionalVerification/modules/tb_mac.vcd"
+
+echo ""
+echo "=================================================="
 echo "[1] Simulating Systolic Array..."
 echo "=================================================="
-iverilog -g2012 -o simulation_output/tb_systolic_array.out \
+iverilog -g2005 -o simulation_output/tb_systolic_array.out \
   rtl/module/mac.v \
   rtl/module/systolic_array.v \
   "$TB_SYSTOLIC"
-vvp simulation_output/tb_systolic_array.out
+vvp simulation_output/tb_systolic_array.out | tee -a simulation_output/sim.log
 mv tb_systolic_array.vcd verif/functionalVerification/modules/ 2>/dev/null
 echo "VCD generated: verif/functionalVerification/modules/tb_systolic_array.vcd"
 
@@ -44,10 +55,10 @@ echo ""
 echo "=================================================="
 echo "[2] Simulating SRAM (Dual Port)..."
 echo "=================================================="
-iverilog -g2012 -o simulation_output/tb_sram_dp.out \
+iverilog -g2005 -o simulation_output/tb_sram_dp.out \
   rtl/module/sram_dp.v \
   "$TB_SRAM"
-vvp simulation_output/tb_sram_dp.out
+vvp simulation_output/tb_sram_dp.out | tee -a simulation_output/sim.log
 mv tb_sram_dp.vcd verif/functionalVerification/modules/ 2>/dev/null
 echo "VCD generated: verif/functionalVerification/modules/tb_sram_dp.vcd"
 
@@ -55,10 +66,10 @@ echo ""
 echo "=================================================="
 echo "[3] Simulating Control Unit..."
 echo "=================================================="
-iverilog -g2012 -o simulation_output/tb_control_unit.out \
+iverilog -g2005 -o simulation_output/tb_control_unit.out \
   rtl/module/control_unit.v \
   "$TB_CONTROL"
-vvp simulation_output/tb_control_unit.out
+vvp simulation_output/tb_control_unit.out | tee -a simulation_output/sim.log
 mv tb_control_unit.vcd verif/functionalVerification/modules/ 2>/dev/null
 echo "VCD generated: verif/functionalVerification/modules/tb_control_unit.vcd"
 
@@ -66,13 +77,18 @@ echo ""
 echo "=================================================="
 echo "[4] Simulating Complete TPU Core..."
 echo "=================================================="
-iverilog -g2012 -o simulation_output/tb_tpu_core.out \
+iverilog -g2005 -o simulation_output/tb_tpu_core.out \
   $RTL_MODULES \
   "$RTL_TOP" \
   "$TB_TPU"
-vvp simulation_output/tb_tpu_core.out
+vvp simulation_output/tb_tpu_core.out | tee -a simulation_output/sim.log
 mv tb_tpu_core.vcd verif/functionalVerification/topmodule/ 2>/dev/null
 echo "VCD generated: verif/functionalVerification/topmodule/tb_tpu_core.vcd"
+
+if grep -q "FAIL" simulation_output/sim.log; then
+    echo "SIMULATION FAILED - see simulation_output/sim.log"
+    exit 1
+fi
 
 # ===================================================
 # 2. Logic Synthesis (Yosys)

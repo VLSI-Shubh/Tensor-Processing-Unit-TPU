@@ -1,32 +1,39 @@
-// 8-bit signed multiply-accumulate unit with pipelining
-// Input: signed 8-bit operands (a, b)
-// Output: signed 16-bit accumulator (y) + pipelined operands
-module mac(
-    input signed [7:0] a, b,
-    input rst, clk,
-    output signed [15:0] y,
-    output reg signed [7:0] a_out, b_out
+// Signed 8-bit multiply-accumulate processing element (output-stationary)
+// acc <= sat16(acc + a*b) every cycle; a and b are forwarded one cycle later
+// to the right / lower neighbour, so zero operands simply add nothing.
+// clr is synchronous and zeroes the accumulator and the forwarded operands.
+module mac (
+    input clk,
+    input rst_n,
+    input clr,
+    input signed [7:0] a,
+    input signed [7:0] b,
+    output reg signed [7:0] a_out,
+    output reg signed [7:0] b_out,
+    output reg signed [15:0] acc
 );
 
-    reg signed [15:0] yin;
-    wire signed [15:0] product;
-    wire signed [16:0] sum;
+    wire signed [15:0] product = a * b;
+    wire signed [16:0] sum = acc + product;
 
-    assign product = a * b;
-    assign sum = yin + product;
+    // 17-bit sum overflows 16 bits when its top two bits differ
+    wire signed [15:0] sum_sat = (sum[16] == sum[15]) ? sum[15:0] :
+                                 (sum[16] ? 16'sh8000 : 16'sh7FFF);
 
-    // Saturate to 16-bit signed range
-    assign y = (sum > 16'h7FFF) ? 16'h7FFF :
-               (sum < 16'h8000) ? 16'h8000 : sum[15:0];
-
-    always @(posedge clk) begin
-        if (rst) begin
-            yin <= 16'h0;
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            a_out <= 8'sh0;
+            b_out <= 8'sh0;
+            acc   <= 16'sh0;
+        end else if (clr) begin
+            a_out <= 8'sh0;
+            b_out <= 8'sh0;
+            acc   <= 16'sh0;
         end else begin
-            yin <= y;
+            a_out <= a;
+            b_out <= b;
+            acc   <= sum_sat;
         end
-        a_out <= a;
-        b_out <= b;
     end
 
 endmodule

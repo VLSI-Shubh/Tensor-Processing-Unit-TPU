@@ -1,115 +1,100 @@
 // Control unit for 4x4 TPU
-// Manages state machine for: load A, load B, compute, read C
+// FSM: IDLE -> LOAD (16 valid_in beats) -> COMPUTE (14 cycles) -> READ (16 cycles) -> FIN -> IDLE
+//
+// COMPUTE timing (cycle = cnt):
+//   cnt 0..6   operand banks are read with skew (rd_en, rd_t = cnt)
+//   cnt 1..10  data ripples through the array; PE(3,3) takes its last operands
+//              on cnt 10, so every result is final from cnt 11 on
+//   cnt 11..13 margin, so all 16 results are final before the first READ cycle
 module control_unit (
     input clk,
     input rst_n,
-    input start,           // Start signal to begin matrix multiply
-    output reg busy,       // Indicates TPU is busy
-    output reg done,       // Signals when result is ready
+    input start,           // Pulse to begin a matrix multiply
+    input valid_in,        // Qualifies a_in/b_in beats during LOAD
 
-    // SRAM Port A control (inputs - A then B)
-    output reg we_A, re_A, cs_A,
-    output reg [3:0] addr_A,
+    output busy,           // High from start until the last result is delivered
+    output done,           // One-cycle pulse, coincident with the last c_valid
 
-    // SRAM Port B control (outputs - C)
-    output reg we_B, re_B, cs_B,
-    output reg [3:0] addr_B,
+    // Array control
+    output clr,            // Clears the array (held during LOAD)
 
-    // Systolic array control
-    output reg sys_rst_n,
+    // Feeder control
+    output wr_en,
+    output [3:0] wr_idx,
+    output rd_en,
+    output [2:0] rd_t,
 
-    // Data mux control
-    output reg load_phase   // 0=loading, 1=reading
+    // Collector control
+    output out_en,
+    output [3:0] out_idx
 );
 
-    localparam IDLE = 3'd0;
-    localparam LOAD_A = 3'd1;
-    localparam LOAD_B = 3'd2;
-    localparam COMPUTE = 3'd3;
-    localparam READ = 3'd4;
+    localparam IDLE    = 3'd0;
+    localparam LOAD    = 3'd1;
+    localparam COMPUTE = 3'd2;
+    localparam READ    = 3'd3;
+    localparam FIN     = 3'd4;
 
-    reg [2:0] state, next_state;
-    reg [3:0] cycle_count;
+    reg [2:0] state;
+    reg [3:0] cnt;
 
-    // State machine
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             state <= IDLE;
-            cycle_count <= 4'h0;
+            cnt <= 4'd0;
         end else begin
-            state <= next_state;
-            if (state != next_state)
-                cycle_count <= 4'h0;
-            else if (state != COMPUTE && state != IDLE)
-                cycle_count <= cycle_count + 1'b1;
+            case (state)
+                IDLE: begin
+                    cnt <= 4'd0;
+                    if (start)
+                        state <= LOAD;
+                end
+                LOAD: begin
+                    if (valid_in) begin
+                        if (cnt == 4'd15) begin
+                            state <= COMPUTE;
+                            cnt <= 4'd0;
+                        end else begin
+                            cnt <= cnt + 4'd1;
+                        end
+                    end
+                end
+                COMPUTE: begin
+                    if (cnt == 4'd13) begin
+                        state <= READ;
+                        cnt <= 4'd0;
+                    end else begin
+                        cnt <= cnt + 4'd1;
+                    end
+                end
+                READ: begin
+                    if (cnt == 4'd15) begin
+                        state <= FIN;
+                        cnt <= 4'd0;
+                    end else begin
+                        cnt <= cnt + 4'd1;
+                    end
+                end
+                FIN: begin
+                    state <= IDLE;
+                    cnt <= 4'd0;
+                end
+                default: begin
+                    state <= IDLE;
+                    cnt <= 4'd0;
+                end
+            endcase
         end
     end
 
-    always @(*) begin
-        next_state = state;
-        case (state)
-            IDLE: begin
-                if (start)
-                    next_state = LOAD_A;
-            end
-            LOAD_A: begin
-                if (cycle_count == 3)
-                    next_state = LOAD_B;
-            end
-            LOAD_B: begin
-                if (cycle_count == 3)
-                    next_state = COMPUTE;
-            end
-            COMPUTE: begin
-                // Wait for 11 cycles (7 fill + 4 to read)
-                if (cycle_count == 10)
-                    next_state = READ;
-            end
-            READ: begin
-                if (cycle_count == 3)
-                    next_state = IDLE;
-            end
-        endcase
-    end
-
-    // Output control signals
-    always @(*) begin
-        busy = (state != IDLE);
-        done = (state == IDLE && ~start);
-        we_A = 1'b0;
-        re_A = 1'b0;
-        cs_A = 1'b0;
-        we_B = 1'b0;
-        re_B = 1'b0;
-        cs_B = 1'b0;
-        sys_rst_n = (state != IDLE);
-        load_phase = 1'b0;
-        addr_A = 4'h0;
-        addr_B = 4'h0;
-
-        case (state)
-            LOAD_A: begin
-                cs_A = 1'b1;
-                we_A = 1'b1;
-                re_A = 1'b0;
-                addr_A = cycle_count;
-                load_phase = 1'b1;
-            end
-            LOAD_B: begin
-                cs_A = 1'b1;
-                we_A = 1'b1;
-                re_A = 1'b0;
-                addr_A = {1'b1, cycle_count[2:0]};  // Address 4-7 for B
-                load_phase = 1'b1;
-            end
-            READ: begin
-                cs_B = 1'b1;
-                we_B = 1'b0;
-                re_B = 1'b1;
-                addr_B = cycle_count;
-                load_phase = 1'b0;
-            end
-        endcase
-    end
+    assign busy   = (state != IDLE);
+    assign done   = (state == FIN);
+    assign clr    = (state == LOAD);
+    assign wr_en  = (state == LOAD) && valid_in;
+    assign wr_idx = cnt;
+    assign rd_en  = (state == COMPUTE) && (cnt <= 4'd6);
+    assign rd_t   = cnt[2:0];
+    assign out_en = (state == READ);
+    assign out_idx = cnt;
 
 endmodule
